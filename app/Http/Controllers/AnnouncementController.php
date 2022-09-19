@@ -38,15 +38,28 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         try {
-            $Announcement = new Announcement();
-            $Announcement->user_id = Auth::id();
-            $Announcement->title = $request->title;
-            $Announcement->announcement = $request->announcement;
-            $Announcement->status = '1'; //This is to override the status check. Remove this line after full payment.
-            $Announcement->save();
+            if ($request->status !== '1') {
+                $Announcement = new Announcement();
+                $Announcement->user_id = Auth::id();
+                $Announcement->title = $request->title;
+                $Announcement->announcement = $request->announcement;
+                $Announcement->status = '0'; //This is to override the status check. Remove this line after full payment.
+                $Announcement->save();
 
-            if ($Announcement) {
-                return true;
+                if ($Announcement) {
+                    return true;
+                }
+            } else {
+                $Announcement = new Announcement();
+                $Announcement->user_id = Auth::id();
+                $Announcement->title = $request->title;
+                $Announcement->announcement = $request->announcement;
+                $Announcement->status = $request->status; //This is to override the status check. Remove this line after full payment.
+                $Announcement->save();
+
+                if ($Announcement) {
+                    return true;
+                }
             }
         } catch (\Throwable $e) {
             return $e;
@@ -114,14 +127,23 @@ class AnnouncementController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $update = DB::table('announcements')
-                ->where('id', '=', $id)
-                ->update([
-                    "title" => $request->title,
-                    "announcement" => $request->announcement,
-                ]);
+            if ($request->from !== "ADMIN") {
+                $update = DB::table('announcements')
+                    ->where('id', '=', $id)
+                    ->update([
+                        "title" => $request->title,
+                        "announcement" => $request->announcement,
+                    ]);
+                return $update;
+            } else {
+                $update = DB::table('announcements')
+                    ->where('id', '=', $id)
+                    ->update([
+                        "status" => $request->status,
+                    ]);
 
-            return $update;
+                return $update;
+            }
         } catch (\Throwable $e) {
             return $e;
         }

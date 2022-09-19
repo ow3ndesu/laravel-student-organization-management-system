@@ -203,36 +203,155 @@ echo request()->getRequestUri();
             <div class="card" id="Announcements" style="display: none;">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-11">
                             {{ __("Announcements") }}
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addAnnouncementModal">
+                                <i class="fas fa-plus text-white"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-body">
+                    <!-- Add Announcement Modal -->
+                    <div class="modal fade" id="addAnnouncementModal" tabindex="-1"
+                        aria-labelledby="addAnnouncementModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="addAnnouncementForm" action="javascript:void(0);" method="POST">
+                                    @csrf
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addAnnouncementModal">Add Announcement</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <label for="title" class="col-md-2 col-form-label ">{{ __('Title')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <input id="title" type="text"
+                                                    class="form-control @error('title') is-invalid @enderror"
+                                                    name="title" value="{{ old('title') }}" required
+                                                    autocomplete="title" minlength="2" autofocus>
+
+                                                @error('title')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="announcement" class="col-md-3 col-form-label ">{{
+                                                __('Announcement') }}</label>
+                                            <div class="col-md-9">
+                                                <textarea id="announcement"
+                                                    class="form-control @error('announcement') is-invalid @enderror"
+                                                    name="announcement" value="{{ old('announcement') }}" required
+                                                    autocomplete="announcement" autofocus rows="3"
+                                                    placeholder="Description here..."></textarea>
+
+                                                @error('announcement')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" value="Submit" class="btn btn-primary"
+                                            id="addAnnouncementSubmitButton">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Edit Announcement Modal -->
                     <div class="modal fade" id="editAnnouncementModal" tabindex="-1"
                         aria-labelledby="editAnnouncementModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editAnnouncementModalLabel">Edit Announcement</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            {{ __("This Feature is Under Development.") }}
+                                <form id="editAnnouncementForm" action="javascript:void(0);" method="PUT">
+                                    @csrf
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_method" value="PUT">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editAnnouncementModalLabel">Edit Announcement</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <label for="new_title" class="col-md-3 col-form-label ">{{ __('Title')
+                                                }}</label>
+                                            <div class="col-md-9">
+
+                                                <input id="new_title" type="text"
+                                                    class="form-control @error('new_title') is-invalid @enderror"
+                                                    name="new_title" value="{{ old('new_title') }}" required
+                                                    autocomplete="new_title" minlength="2" autofocus readonly>
+
+                                                @error('new_title')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="new_announcement" class="col-md-3 col-form-label ">{{
+                                                __('Announcement') }}</label>
+                                            <div class="col-md-9">
+                                                <textarea id="new_announcement"
+                                                    class="form-control @error('new_announcement') is-invalid @enderror"
+                                                    name="new_announcement" value="{{ old('new_announcement') }}"
+                                                    required autocomplete="new_announcement" autofocus rows="3"
+                                                    placeholder="Description here..." readonly></textarea>
+
+                                                @error('new_announcement')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="new_title" class="col-md-3 col-form-label ">{{ __('Status')
+                                                }}</label>
+                                            <div class="col-md-9">
+
+                                                <select id="new_status"
+                                                    class="form-control @error('new_status') is-invalid @enderror"
+                                                    name="new_status" value="{{ old('new_status') }}" required
+                                                    autocomplete="new_status" autofocus>
+                                                    <option value="0" selected>Pending</option>
+                                                    <option value="1">Approved</option>
+                                                </select>
+
+                                                @error('new_status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" value="Submit" class="btn btn-primary"
-                                        id="editAnnouncementSubmitButton">Submit</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" value="Submit" class="btn btn-primary"
+                                            id="editAnnouncementSubmitButton">Submit</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -641,6 +760,114 @@ echo request()->getRequestUri();
                     });
                 }
             })
+        });
+
+        $(document).on("submit", "#addAnnouncementForm", function () {
+
+        var title = $('#title').val();
+        var announcement = $('#announcement').val();
+
+        var formData = new FormData();
+        formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+        formData.append('title', title);
+        formData.append('announcement', announcement);
+        formData.append('status', '1');
+
+        $.ajax({
+            url: "{{ route('administrator.storeAnnouncement') }}",
+            method: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                if (data == 1) {
+
+                    $('#addAnnouncementModal').modal('hide');
+                    Swal.fire(
+                        'Yeeeey!',
+                        'Announcement is posted!',
+                        'success'
+                    )
+
+                    $('#addAnnouncementForm').trigger('reset');
+                    $('#announcementTableBody').empty();
+                    showAll();
+                } else {
+
+                    $('#addAnnouncementModal').modal('hide');
+                    Swal.fire(
+                        'Eeek!',
+                        'Something went wrong!',
+                        'error'
+                    )
+
+                    $('#addAnnouncementForm').trigger('reset');
+                }
+            }
+        })
+        });
+
+        $(document).on('click', "button[name='editAnnouncement']", function () {
+            var id = $(this).val();
+            var route = "{{ route('administrator.editAnnouncement', ':id')}}";
+            route = route.replace(":id", id);
+
+            $.ajax({
+                url: route,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (data) {
+                    $('#id').val(data[0]['id']);
+                    $('#new_title').val(data[0]['title']);
+                    $('#new_announcement').val(data[0]['announcement']);
+                    $('#new_status').val(data[0]['status']);
+                }
+            }),
+                $(document).on("submit", "#editAnnouncementForm", function () {
+                    let id = $('#id').val();
+                    let status = $('#new_status').val();
+
+                    let route = "{{ route('administrator.updateAnnouncement', ':id')}}";
+                    route = route.replace(':id', id);
+
+                    let formData = new FormData();
+                    formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                    formData.append("_method", 'PUT');
+                    formData.append("from", 'ADMIN');
+                    formData.append('status', status);
+
+                    $.ajax({
+                        url: route,
+                        method: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            if (data == 1) {
+                                $('#editAnnouncementModal').modal('hide');
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Announcement Updated!',
+                                    'success'
+                                )
+
+                                $('#editAnnouncementForm').trigger('reset');
+                                $('#announcementTableBody').empty();
+                                showAll();
+                            } else {
+                                $('#editAnnouncementModal').modal('hide');
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Nothing Changes!',
+                                    'error'
+                                )
+
+                                $('#editAnnouncementForm').trigger('reset');
+                            }
+                        }
+                    })
+                });
         });
 
         $(document).on('click', "button[name='deleteAnnouncement']", function () {

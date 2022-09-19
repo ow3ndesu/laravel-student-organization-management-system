@@ -36,7 +36,11 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-administrators', [App\Http\Controllers\AdministratorController::class, 'getAllAdministrators'])->name('administrator.administrators');
 
     Route::resource('/event', App\Http\Controllers\EventController::class)->names(['destroy' => 'administrator.destroyEvent']);
-    Route::resource('/announcement', App\Http\Controllers\AnnouncementController::class)->names(['destroy' => 'administrator.destroyAnnouncement']);
+    Route::resource('/announcement/store', App\Http\Controllers\AnnouncementController::class)->names(['store' => 'administrator.storeAnnouncement']);
+    Route::resource('/announcement/destroy', App\Http\Controllers\AnnouncementController::class)->names(['destroy' => 'administrator.destroyAnnouncement']);
+    Route::resource('/announcement/edit', App\Http\Controllers\AnnouncementController::class)->names(['edit' => 'administrator.editAnnouncement']);
+    Route::resource('/announcement/update', App\Http\Controllers\AnnouncementController::class)->names(['update' => 'administrator.updateAnnouncement']);
+
     Route::resource('/student', App\Http\Controllers\StudentController::class);
     Route::resource('/administrator', App\Http\Controllers\AdministratorController::class);
 });

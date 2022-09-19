@@ -994,7 +994,7 @@ echo request()->getRequestUri();
                         $('#addAnnouncementModal').modal('hide');
                         Swal.fire(
                             'Yeeeey!',
-                            'Event is listed for approval!',
+                            'Announcement is listed for approval!',
                             'success'
                         )
 
