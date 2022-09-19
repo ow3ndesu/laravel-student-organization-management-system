@@ -44,7 +44,7 @@ class EventController extends Controller
             $event->place = $request->place;
             $event->date_time = $request->date_time;
             $event->description = $request->description;
-            $event->status = '1';
+            $event->status = '0';
             $event->save();
 
             if ($event) {
@@ -117,16 +117,26 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $update = DB::table('events')
-                ->where('id', '=', $id)
-                ->update([
-                    "name" => $request->name,
-                    "place" => $request->place,
-                    "date_time" => $request->date_time,
-                    "description" => $request->description,
-                ]);
+            if ($request->from !== "ADMIN") {
+                $update = DB::table('events')
+                    ->where('id', '=', $id)
+                    ->update([
+                        "name" => $request->name,
+                        "place" => $request->place,
+                        "date_time" => $request->date_time,
+                        "description" => $request->description,
+                    ]);
 
-            return $update;
+                return $update;
+            } else {
+                $update = DB::table('events')
+                    ->where('id', '=', $id)
+                    ->update([
+                        "status" => $request->status,
+                    ]);
+
+                return $update;
+            }
         } catch (\Throwable $e) {
             return $e;
         }

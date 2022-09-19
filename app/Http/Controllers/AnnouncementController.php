@@ -38,7 +38,7 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         try {
-            if ($request->status !== '1') {
+            if ($request->from !== 'ADMIN') {
                 $Announcement = new Announcement();
                 $Announcement->user_id = Auth::id();
                 $Announcement->title = $request->title;
