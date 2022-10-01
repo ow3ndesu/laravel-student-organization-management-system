@@ -41,7 +41,7 @@ class OrganizationController extends Controller
             $organization = new Organization();
             $organization->userId = Auth::id();
             $organization->name = $request->name;
-            $organization->status = '1';
+            $organization->status = '0';
             $organization->save();
 
             if ($organization) {
@@ -76,7 +76,6 @@ class OrganizationController extends Controller
         $organizations = DB::table('organizations')
             ->select('organizations.*', 'users.name as user_name')
             ->leftJoin('users', 'organizations.user_id', '=', 'users.id')
-            ->where('status', '=', '1')
             ->get();
         return response()->json($organizations);
     }

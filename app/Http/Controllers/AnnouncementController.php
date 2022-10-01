@@ -158,7 +158,7 @@ class AnnouncementController extends Controller
     public function destroy($id)
     {
         try {
-            $delete = DB::table('announcements')
+            $delete = DB::table('applications')
                 ->where('id', '=', $id)
                 ->delete();
 

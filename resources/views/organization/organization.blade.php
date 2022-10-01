@@ -17,11 +17,11 @@ echo request()->getRequestUri();
                             <i class="fas fa-hand-holding-medical" style="margin-right: 3px;"></i>
                             <a href="#Infographics" class="left-nav-links" id="info-link">Infographics</a>
                         </li>
-                        <li class="list-group-item" id="app-li">
+                        <li @if($status == 'pending') class="list-group-item" @else class="list-group-item disabled" @endif id="app-li">
                             <i class="fas fa-file-contract" style="margin-right: 3px;"></i>
                             <a href="#Application" class="left-nav-links" id="app-link">Application</a>
                         </li>
-                        <li class="list-group-item" id="ren-li">
+                        <li @if($status == 'renewal') class="list-group-item" @else  class="list-group-item disabled" @endif id="ren-li">
                             <i class="fas fa-file-alt" style="margin-right: 3px;"></i>
                             <a href="#Renewal" class="left-nav-links" id="ren-link">Renewal</a>
                         </li>
@@ -36,15 +36,15 @@ echo request()->getRequestUri();
 
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li @if($passed == 'true') class="list-group-item" @else  class="list-group-item disabled" @endif id="eve-li">
+                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="eve-li">
                             <i class="fas fa-calendar" style="margin-right: 3px;"></i>
                             <a href="#Events" class="left-nav-links" id="eve-link">Events</a>
                         </li>
-                        <li @if($passed == 'true') class="list-group-item" @else  class="list-group-item disabled" @endif id="act-li">
+                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="act-li">
                             <i class="fas fa-calendar-check" style="margin-right: 3px;"></i>
                             <a href="#Active" class="left-nav-links" id="act-link">Active Events</a>
                         </li>
-                        <li @if($passed == 'true') class="list-group-item" @else  class="list-group-item disabled" @endif id="ann-li">
+                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="ann-li">
                             <i class="fas fa-bullhorn" style="margin-right: 3px;"></i>
                             <a href="#Announcements" class="left-nav-links" id="ann-link">Announcements</a>
                         </li>
@@ -59,7 +59,7 @@ echo request()->getRequestUri();
 
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li @if($passed == 'true') class="list-group-item" @else  class="list-group-item disabled" @endif id="off-li">
+                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="off-li">
                             <i class="fas fa-users" style="margin-right: 3px;"></i>
                             <a href="#Officers" class="left-nav-links" id="off-link">Officers & Members</a>
                         </li>
@@ -87,7 +87,7 @@ echo request()->getRequestUri();
                     {{ __("Application") }}
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" id="applicationMessage">
                     <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
                         @csrf
                         <div class="row">
@@ -99,7 +99,7 @@ echo request()->getRequestUri();
                                                 {{ __("Organization Name :") }}
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="organizationname" id="organizationname" required>
+                                                <input type="text" class="form-control" name="organizationname" id="organizationname" minlength="6" required>
                                             </div>
                                         </div>
                                     </div>
@@ -717,6 +717,90 @@ echo request()->getRequestUri();
         }
 
         function showAll() {
+            showApplication();
+            showEvents();
+            showAnnouncements();
+        }
+        showAll();
+
+        function showApplication() {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: "{{route('organization.myapplication')}}",
+
+                success: function (data) {
+                    if (data.length !== 0) {
+                        $("#applicationMessage").empty().append(`
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-center">
+                                    {{ __("Please wait for approval.") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Delete</button>
+                                </div>
+                            </div>
+                        `)
+                    } else {
+                        $("#applicationMessage").empty().append(`
+                            <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        {{ __("Organization Name :") }}
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="organizationname" id="organizationname" minlength="6" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {{ __("Application Form") }}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <!-- <i class="fas fa-plus text-black"></i> -->
+                                                <input type="file" name="applicationform" id="applicationform" accept="application/pdf, application/vnd.ms-excel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {{ __("Adviser's Commitment Form") }}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <!-- <i class="fas fa-plus text-black"></i> -->
+                                                <input type="file" name="advisersform" id="advisersform" accept="application/pdf, application/vnd.ms-excel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <input type="submit" class="btn btn-primary" id="submitapplication" value="Apply" >
+                                    </div>
+                                </div>
+                            </form>
+                        `)
+                    }
+                }
+            })
+        }
+        function showEvents() {
             $.ajax({
                 method: 'POST',
                 data: {
@@ -807,7 +891,8 @@ echo request()->getRequestUri();
                     }
                 }
             });
-
+        }
+        function showAnnouncements() {
             $.ajax({
                 method: 'POST',
                 data: {
@@ -849,19 +934,92 @@ echo request()->getRequestUri();
                 }
             })
         }
-        showAll();
-
+        
         $(document).on("submit", "#applyOrganizationForm", function () {
             var name = $('#organizationname').val();
-            var applicationform = $('#applicationform').val();
-            var advisersform = $('#advisersform').val();
+            var applicationform = $("#applicationform")[0].files;
+            var advisersform = $("#advisersform")[0].files;
 
             var formData = new FormData();
             formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
             formData.append('name', name);
-            formData.append('applicationform', applicationform);
-            formData.append('advisersform', advisersform);
-        })
+            formData.append('applicationform', applicationform[0]);
+            formData.append('advisersform', advisersform[0]);
+
+            $.ajax({
+                url: "{{ route('application.store') }}",
+                method: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (data) {
+                    $('#applyOrganizationForm').trigger("reset");
+                    showApplication();
+                    if (data == 1) {
+                        Swal.fire(
+                            'Yeeeey!',
+                            'Your application is submitted!',
+                            'success'
+                        );
+                        
+                    } else {
+                        Swal.fire(
+                            'Eeek!',
+                            data[0] || data,
+                            'error'
+                        );
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', "#deleteApplication", function () {
+            var id = $(this).val();
+            var route = "{{ route('application.destroy', ':id')}}";
+            route = route.replace(":id", id);
+
+            var formData = new FormData();
+            formData.append(
+                "_token",
+                $('meta[name="csrf-token"]').attr("content")
+            );
+            formData.append("_method", "DELETE");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: route,
+                        contentType: false,
+                        processData: false,
+                        type: "POST",
+                        data: formData,
+                        success: function (data) {
+                            showApplication();
+                            if (data >= 1) {
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Application Deleted!',
+                                    'success'
+                                )
+                            } else {
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Something went wrong!',
+                                    'error'
+                                )
+                            }
+                        },
+                    });
+                }
+            })
+        });
 
         $(document).on("submit", "#addEventForm", function () {
 

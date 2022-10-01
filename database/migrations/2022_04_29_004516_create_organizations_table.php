@@ -17,7 +17,7 @@ class CreateOrganizationsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
-            $table->tinyInteger('status')->default('1'); // 0 meaning not recognized, // 1 is recognized, // 2 is for renewal
+            $table->tinyInteger('status')->default('0'); // 0 meaning not recognized, // 1 is recognized, // 2 is for renewal
             $table->timestamps();
         });
     }

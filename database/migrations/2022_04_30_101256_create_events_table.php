@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->string('place');
             $table->string('date_time');
             $table->string('description');
-            $table->string('status'); // 0 meaning need approval, // 1 is approved, // 2 is for deletion
+            $table->string('status')->default('0'); // 0 meaning need approval, // 1 is approved, // 2 is for deletion
             $table->timestamps();
         });
     }

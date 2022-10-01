@@ -651,6 +651,14 @@ echo request()->getRequestUri();
         }
 
         function showAll() {
+            showOrganizations();
+            showEvents();
+            showAnnouncements();
+            showApplications();
+        }
+        showAll();
+
+        function showOrganizations() {
             $.ajax({
                 method: 'POST',
                 data: {
@@ -681,7 +689,8 @@ echo request()->getRequestUri();
                     }
                 }
             });
-
+        }
+        function showEvents() {
             $.ajax({
                 method: 'POST',
                 data: {
@@ -767,7 +776,8 @@ echo request()->getRequestUri();
                     }
                 }
             });
-
+        }
+        function showAnnouncements() {
             $.ajax({
                 method: 'POST',
                 data: {
@@ -809,7 +819,37 @@ echo request()->getRequestUri();
                 }
             })
         }
-        showAll();
+        function showApplications() {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: "{{route('administrator.applications')}}",
+
+                success: function (data) {
+                    if (data.length != 0) {
+                        $('#applicationTableBody').empty();
+                        data.forEach(element => {
+                            var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : 'Removal';
+
+                            $('#applicationTableBody').append(`
+                            <tr>
+                                <td>`+ element.name + `</td>
+                                <td>`+ element.user_name + `</td>
+                                <td>`+ status + `</td>
+                                <td  class="text-end">
+                                    Under Development.
+                                </td>
+                            </tr>
+                            `)
+                        });
+                    } else {
+                        $('#applicationTableBody').empty();
+                    }
+                }
+            })
+        }
 
         $(document).on('click', "button[name='editEvent']", function () {
             var id = $(this).val();

@@ -8,8 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Organization;
-use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -75,19 +73,19 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function approveOrg($id)
-    {
+    // protected function approveOrg($id)
+    // {
 
-        $details = DB::table('users')
-            ->select('*')
-            ->where('id', '=', $id)
-            ->first();
+    //     $details = DB::table('users')
+    //         ->select('*')
+    //         ->where('id', '=', $id)
+    //         ->first();
 
 
-        $organization = new Organization();
-        $organization->user_id = $id;
-        $organization->name = $details->name;
-        $organization->status = '1';
-        $organization->save();
-    }
+    //     $organization = new Organization();
+    //     $organization->user_id = $id;
+    //     $organization->name = $details->name;
+    //     $organization->status = '0';
+    //     $organization->save();
+    // }
 }

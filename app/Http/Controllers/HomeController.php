@@ -74,12 +74,12 @@ class HomeController extends Controller
     public function organizationTab()
     {
         $organization  = DB::table('organizations')
-            ->select('id')
+            ->select('*')
             ->where('user_id', '=', Auth::id())
-            ->where('status', '=', '1')
-            ->get();
+            ->first();
 
-        return view('organization.organization', ["passed" => (Str::length($organization) != 2) ? 'true' : 'false']);
+        return view('organization.organization', ["status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : 'renewal')]);
+        // return $organization;
     }
 
     protected function update(Request $data)

@@ -34,6 +34,7 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-organizations', [App\Http\Controllers\OrganizationController::class, 'getAllOrganizationsNonAuthor'])->name('administrator.organizations');
     Route::post('get-students', [App\Http\Controllers\StudentController::class, 'getAllStudents'])->name('administrator.students');
     Route::post('get-administrators', [App\Http\Controllers\AdministratorController::class, 'getAllAdministrators'])->name('administrator.administrators');
+    Route::post('get-applications', [App\Http\Controllers\ApplicationController::class, 'getAllApplications'])->name('administrator.applications');
 
     Route::resource('/event/edit', App\Http\Controllers\EventController::class)->names(['edit' => 'administrator.editEvent']);
     Route::resource('/event/update', App\Http\Controllers\EventController::class)->names(['update' => 'administrator.updateEvent']);
@@ -54,8 +55,10 @@ Route::group(["middleware" => "organization", "prefix" => "organization"], funct
     Route::post('get-active-events', [App\Http\Controllers\EventController::class, 'getAllActiveEvents'])->name('organization.active-events');
     Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllAnnouncements'])->name('organization.announcements');
     Route::post('get-organizations', [App\Http\Controllers\OrganizationController::class, 'getAllOrganizations'])->name('organization.organizations');
+    Route::post('get-application', [App\Http\Controllers\ApplicationController::class, 'getMyApplication'])->name('organization.myapplication');
 
     Route::resource('/organization/event', App\Http\Controllers\EventController::class);
+    Route::resource('/organization/application', App\Http\Controllers\ApplicationController::class);
     Route::resource('/organization/announcement', App\Http\Controllers\AnnouncementController::class);
 });
 
