@@ -87,6 +87,99 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body">
+                    <!-- View Application Modal -->
+                    <div class="modal fade" id="viewApplicationModal" tabindex="-1" aria-labelledby="viewApplicationModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="viewApplicationForm" action="javascript:void(0);" method="PUT">
+                                    @csrf
+                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="_method" value="PUT">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewApplicationModalLabel">View Application</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-2">
+                                            <label for="new_name" class="col-md-2 col-form-label ">{{ __('Name')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <input id="new_name" type="text"
+                                                    class="form-control @error('new_name') is-invalid @enderror"
+                                                    name="new_name" value="{{ old('new_name') }}" required
+                                                    autocomplete="new_name" autofocus readonly>
+
+                                                @error('new_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="new_handler" class="col-md-2 col-form-label ">{{ __('Handler')
+                                                }}</label>
+                                            <div class="col-md-10">
+                                                <input id="new_handler" type="text"
+                                                    class="form-control @error('new_handler') is-invalid @enderror"
+                                                    name="new_handler" value="{{ old('new_handler') }}" required
+                                                    autocomplete="new_handler" autofocus readonly>
+
+                                                @error('new_handler')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2 text-center">
+                                            <label for="new_handler" class="col-md-2 col-form-label ">{{ __('Files')
+                                            }}</label>
+                                            <div class="col-md-5 preview" id="appForm">
+                                                <a href="#" target="_blank" rel="noopener noreferrer" class="form-control text-decoration-none">Application Form</a>
+                                            </div>
+                                            <div class="col-md-5 preview" id="commForm">
+                                                <a href="#" target="_blank" rel="noopener noreferrer" class="form-control text-decoration-none">Adviser's Commitment Form</a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-2">
+                                            <label for="new_title" class="col-md-2 col-form-label ">{{ __('Status')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <select id="new_status"
+                                                    class="form-control @error('new_status') is-invalid @enderror"
+                                                    name="new_status" value="{{ old('new_status') }}" required
+                                                    autocomplete="new_status" autofocus>
+                                                    <option value="0" selected>Pending</option>
+                                                    <option value="1">Approved</option>
+                                                    <option value="2">Renewal</option>
+                                                </select>
+
+                                                @error('new_status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" value="Submit" class="btn btn-primary"
+                                            id="editEventSubmitButton">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -839,7 +932,14 @@ echo request()->getRequestUri();
                                 <td>`+ element.user_name + `</td>
                                 <td>`+ status + `</td>
                                 <td  class="text-end">
-                                    Under Development.
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" value="` + element.id + `" name="viewApplication" class="btn btn-primary" id="viewApplication" data-bs-toggle="modal" data-bs-target="#viewApplicationModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" value="` + element.id + `" name="deleteApplication" class="btn btn-danger between" id="deleteApplication">
+                                                <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                             `)
