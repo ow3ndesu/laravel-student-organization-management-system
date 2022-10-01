@@ -87,7 +87,18 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body">
-                    {{ __("This Feature is Under Development.") }}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Organization</th>
+                                <th scope="col">Handler</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationTableBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
 

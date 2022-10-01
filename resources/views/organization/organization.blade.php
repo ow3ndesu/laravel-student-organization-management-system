@@ -88,7 +88,54 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body">
-                    {{ __("This Feature is Under Development.") }}
+                    <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{ __("Organization Name :") }}
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="organizationname" id="organizationname" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ __("Application Form") }}
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <!-- <i class="fas fa-plus text-black"></i> -->
+                                        <input type="file" name="applicationform" id="applicationform" accept="application/pdf, application/vnd.ms-excel" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ __("Adviser's Commitment Form") }}
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <!-- <i class="fas fa-plus text-black"></i> -->
+                                        <input type="file" name="advisersform" id="advisersform" accept="application/pdf, application/vnd.ms-excel" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" id="submitapplication" value="Apply" >
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -803,6 +850,18 @@ echo request()->getRequestUri();
             })
         }
         showAll();
+
+        $(document).on("submit", "#applyOrganizationForm", function () {
+            var name = $('#organizationname').val();
+            var applicationform = $('#applicationform').val();
+            var advisersform = $('#advisersform').val();
+
+            var formData = new FormData();
+            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+            formData.append('name', name);
+            formData.append('applicationform', applicationform);
+            formData.append('advisersform', advisersform);
+        })
 
         $(document).on("submit", "#addEventForm", function () {
 
