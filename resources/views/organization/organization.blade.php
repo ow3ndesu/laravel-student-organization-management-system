@@ -935,7 +935,7 @@ echo request()->getRequestUri();
             })
         }
         
-        $(document).on("submit", "#applyOrganizationForm", function () {
+        $(document).unbind('submit').on("submit", "#applyOrganizationForm", function () {
             var name = $('#organizationname').val();
             var applicationform = $("#applicationform")[0].files;
             var advisersform = $("#advisersform")[0].files;
@@ -1021,7 +1021,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on("submit", "#addEventForm", function () {
+        $(document).unbind('submit').on("submit", "#addEventForm", function () {
 
             var name = $('#name').val();
             var place = $('#place').val();
@@ -1088,7 +1088,7 @@ echo request()->getRequestUri();
                 }
             }),
 
-                $(document).on("submit", "#editEventForm", function () {
+                $(document).unbind('submit').on("submit", "#editEventForm", function () {
                     let id = $('#id').val();
                     let name = $('#new_name').val();
                     let place = $('#new_place').val();
@@ -1189,7 +1189,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on("submit", "#addAnnouncementForm", function () {
+        $(document).unbind('submit').on("submit", "#addAnnouncementForm", function () {
 
             var title = $('#title').val();
             var announcement = $('#announcement').val();
@@ -1249,7 +1249,7 @@ echo request()->getRequestUri();
                     $('#new_announcement').val(data[0]['announcement']);
                 }
             }),
-                $(document).on("submit", "#editAnnouncementForm", function () {
+                $(document).unbind('submit').on("submit", "#editAnnouncementForm", function () {
                     let id = $('#id').val();
                     let title = $('#new_title').val();
                     let announcement = $('#new_announcement').val();

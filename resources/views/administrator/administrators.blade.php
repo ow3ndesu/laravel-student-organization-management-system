@@ -246,7 +246,7 @@
         };
         getAdministrators();
 
-        $(document).on('submit', '#addAdministratorForm', function () {
+        $(document).unbind('submit').on('submit', '#addAdministratorForm', function () {
             var name = $('#name').val();
             var email = $('#email').val();
             var password = $('#password').val();
@@ -312,7 +312,7 @@
                 }
             }),
 
-                $(document).on("submit", "#editAdministratorForm", function () {
+                $(document).unbind('submit').on("submit", "#editAdministratorForm", function () {
                     let id = $('#id').val();
                     let name = $('#new_name').val();
                     let email = $('#new_email').val();

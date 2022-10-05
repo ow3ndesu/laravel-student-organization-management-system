@@ -72,20 +72,4 @@ class RegisterController extends Controller
             'type' => $data['type'],
         ]);
     }
-
-    // protected function approveOrg($id)
-    // {
-
-    //     $details = DB::table('users')
-    //         ->select('*')
-    //         ->where('id', '=', $id)
-    //         ->first();
-
-
-    //     $organization = new Organization();
-    //     $organization->user_id = $id;
-    //     $organization->name = $details->name;
-    //     $organization->status = '0';
-    //     $organization->save();
-    // }
 }

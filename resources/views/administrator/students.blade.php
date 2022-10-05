@@ -238,7 +238,7 @@
         };
         getStudents();
 
-        $(document).on('submit', '#addStudentForm', function () {
+        $(document).unbind('submit').on('submit', '#addStudentForm', function () {
             var name = $('#name').val();
             var email = $('#email').val();
             var password = $('#password').val();
@@ -304,7 +304,7 @@
                 }
             }),
 
-                $(document).on("submit", "#editStudentForm", function () {
+                $(document).unbind('submit').on("submit", "#editStudentForm", function () {
                     let id = $('#id').val();
                     let name = $('#new_name').val();
                     let email = $('#new_email').val();

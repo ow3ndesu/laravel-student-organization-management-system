@@ -521,11 +521,11 @@ echo request()->getRequestUri();
                                                 }}</label>
                                             <div class="col-md-9">
 
-                                                <select id="new_status"
+                                                <select id="new_announcementstatus"
                                                     class="form-control @error('new_status') is-invalid @enderror"
                                                     name="new_status" value="{{ old('new_status') }}" required
                                                     autocomplete="new_status" autofocus>
-                                                    <option value="0" selected>Pending</option>
+                                                    <option value="0">Pending</option>
                                                     <option value="1">Approved</option>
                                                 </select>
 
@@ -1067,7 +1067,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on("submit", "#addAnnouncementForm", function () {
+        $(document).unbind('submit').on("submit", "#addAnnouncementForm", function () {
 
         var title = $('#title').val();
         var announcement = $('#announcement').val();
@@ -1127,12 +1127,12 @@ echo request()->getRequestUri();
                     $('#id').val(data[0]['id']);
                     $('#new_title').val(data[0]['title']);
                     $('#new_announcement').val(data[0]['announcement']);
-                    $('#new_status').val(data[0]['status']);
+                    $('#new_announcementstatus').val(data[0]['status']);
                 }
             }),
-                $(document).on("submit", "#editAnnouncementForm", function () {
+                $(document).unbind('submit').on("submit", "#editAnnouncementForm", function () {
                     let id = $('#id').val();
-                    let status = $('#new_status').val();
+                    let status = $('#new_announcementstatus').val();
 
                     let route = "{{ route('administrator.updateAnnouncement', ':id')}}";
                     route = route.replace(':id', id);

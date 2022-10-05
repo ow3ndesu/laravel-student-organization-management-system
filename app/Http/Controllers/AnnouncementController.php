@@ -129,7 +129,7 @@ class AnnouncementController extends Controller
         try {
             if ($request->from !== "ADMIN") {
                 $update = DB::table('announcements')
-                    ->where('id', '=', $id)
+                    ->where('id', $id)
                     ->update([
                         "title" => $request->title,
                         "announcement" => $request->announcement,
@@ -137,7 +137,7 @@ class AnnouncementController extends Controller
                 return $update;
             } else {
                 $update = DB::table('announcements')
-                    ->where('id', '=', $id)
+                    ->where('id', $id)
                     ->update([
                         "status" => $request->status,
                     ]);
