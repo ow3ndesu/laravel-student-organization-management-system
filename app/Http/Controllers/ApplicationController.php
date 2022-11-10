@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class ApplicationController extends Controller
 {
@@ -104,7 +105,7 @@ class ApplicationController extends Controller
     public function getAllApplications()
     {
         $all = DB::table('applications')
-            ->select('*', 'organizations.name', 'organizations.status', 'users.name as user_name', 'users.email')
+            ->select('applications.id', 'organizations.name', 'organizations.status', 'users.name as user_name', 'users.email')
             ->join('organizations', 'organizations.id', '=', 'applications.organization_id')
             ->join('users', 'users.id', '=', 'applications.user_id')
             ->where('organizations.status', '=', '0')
@@ -118,9 +119,16 @@ class ApplicationController extends Controller
      * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function edit(Application $application)
+    public function edit($id)
     {
-        //
+        $application = DB::table('applications')
+            ->select('applications.id as application_id', 'applications.user_id', 'applications.organization_id', 'applications.application_form', 'applications.advisers_commitment_form', 'organizations.name', 'organizations.status', 'users.name as handler', 'users.email')
+            ->join('organizations', 'organizations.id', '=', 'applications.organization_id')
+            ->join('users', 'users.id', '=', 'applications.user_id')
+            ->where('applications.id', '=', $id)
+            ->get();
+
+        return response()->json($application);
     }
 
     /**
@@ -130,9 +138,25 @@ class ApplicationController extends Controller
      * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Application $application)
+    public function update(Request $request, $id)
     {
-        //
+        $modifiedat = date('m/d/Y');
+        try {
+            if ($request->from === "ADMIN") {
+                $update = DB::table('applications')
+                    ->join('organizations', 'organizations.id', '=', 'applications.organization_id')
+                    ->where('applications.id', $id)
+                    ->update([
+                        "applications.administrator_id" => Auth::id(),
+                        "applications.modified_at" => $modifiedat,
+                        "organizations.status" => $request->status,
+                        "organizations.updated_at" => Carbon::now()->toDateTimeString(),
+                    ]);
+                return $update;
+            }
+        } catch (\Throwable $e) {
+            return $e;
+        }
     }
 
     /**
@@ -152,12 +176,12 @@ class ApplicationController extends Controller
 
             File::deleteDirectory(public_path("files/application/" . $org->name));
 
-            $delete = DB::table('applications')
-                ->where('id', '=', $id)
-                ->delete();
-
             $delfromorg = DB::table('organizations')
                 ->where('id', '=', $org->id)
+                ->delete();
+
+            $delete = DB::table('applications')
+                ->where('id', '=', $id)
                 ->delete();
 
             if ($delete != 0) {

@@ -88,13 +88,13 @@ echo request()->getRequestUri();
 
                 <div class="card-body">
                     <!-- View Application Modal -->
-                    <div class="modal fade" id="viewApplicationModal" tabindex="-1" aria-labelledby="viewApplicationModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="viewApplicationModal" tabindex="-1"
+                        aria-labelledby="viewApplicationModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form id="viewApplicationForm" action="javascript:void(0);" method="PUT">
                                     @csrf
-                                    <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="applicationid" id="applicationid">
                                     <input type="hidden" name="_method" value="PUT">
 
                                     <div class="modal-header">
@@ -139,30 +139,35 @@ echo request()->getRequestUri();
 
                                         <div class="row mb-2 text-center">
                                             <label for="new_handler" class="col-md-2 col-form-label ">{{ __('Files')
-                                            }}</label>
-                                            <div class="col-md-5 preview" id="appForm">
-                                                <a href="#" target="_blank" rel="noopener noreferrer" class="form-control text-decoration-none">Application Form</a>
+                                                }}</label>
+                                            <div class="col-md-5 preview">
+                                                <a id="appForm" target="_blank" rel="noopener noreferrer"
+                                                    class="form-control text-decoration-none">Application Form</a>
                                             </div>
-                                            <div class="col-md-5 preview" id="commForm">
-                                                <a href="#" target="_blank" rel="noopener noreferrer" class="form-control text-decoration-none">Adviser's Commitment Form</a>
+                                            <div class="col-md-5 preview">
+                                                <a id="commForm" target="_blank" rel="noopener noreferrer"
+                                                    class="form-control text-decoration-none">Adviser's Commitment
+                                                    Form</a>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row mb-2">
                                             <label for="new_title" class="col-md-2 col-form-label ">{{ __('Status')
                                                 }}</label>
                                             <div class="col-md-10">
 
-                                                <select id="new_status"
-                                                    class="form-control @error('new_status') is-invalid @enderror"
-                                                    name="new_status" value="{{ old('new_status') }}" required
-                                                    autocomplete="new_status" autofocus>
-                                                    <option value="0" selected>Pending</option>
+                                                <select id="new_applicationstatus"
+                                                    class="form-control @error('new_applicationstatus') is-invalid @enderror"
+                                                    name="new_applicationstatus"
+                                                    value="{{ old('new_applicationstatus') }}" required
+                                                    autocomplete="new_applicationstatus" autofocus>
+                                                    <option value="0">Pending</option>
                                                     <option value="1">Approved</option>
                                                     <option value="2">Renewal</option>
+                                                    <option value="3">Disapproved</option>
                                                 </select>
 
-                                                @error('new_status')
+                                                @error('new_applicationstatus')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -331,7 +336,7 @@ echo request()->getRequestUri();
                                                     class="form-control @error('new_status') is-invalid @enderror"
                                                     name="new_status" value="{{ old('new_status') }}" required
                                                     autocomplete="new_status" autofocus>
-                                                    <option value="0" selected>Pending</option>
+                                                    <option value="0">Pending</option>
                                                     <option value="1">Approved</option>
                                                     <option value="2">Removal</option>
                                                 </select>
@@ -815,7 +820,7 @@ echo request()->getRequestUri();
                                                 <i class="fas fa-pen"></i>
                                             </button>`;
                             }
-                            
+
                             var status = (data[index]['status'] == 0) ? 'Pending' : (data[index]['status'] == 1) ? 'Approved' : 'Removal';
 
                             $('#eventTableBody').append(
@@ -951,6 +956,71 @@ echo request()->getRequestUri();
             })
         }
 
+        $(document).on('click', "button[name='viewApplication']", function () {
+            var id = $(this).val();
+            var route = "{{ route('administrator.viewApplication', ':id')}}";
+            route = route.replace(":id", id);
+
+            $.ajax({
+                url: route,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (data) {
+                    $('#applicationid').val(data[0]['application_id']);
+                    $('#new_name').val(data[0]['name']);
+                    $('#new_handler').val(data[0]['handler'])
+                    $('#appForm').attr('href', '../' + data[0].application_form)
+                    $('#commForm').attr('href', '../' + data[0].advisers_commitment_form)
+                    $('#new_applicationstatus').val(data[0]['status'])
+                }
+            }),
+                $(document).unbind('submit').on("submit", "#viewApplicationForm", function () {
+                    let id = $('#applicationid').val();
+                    let status = $('#new_applicationstatus').val();
+
+                    let route = "{{ route('administrator.updateApplication', ':id')}}";
+                    route = route.replace(':id', id);
+
+                    let formData = new FormData();
+                    formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                    formData.append("_method", 'PUT');
+                    formData.append("from", "ADMIN");
+                    formData.append('status', status);
+
+                    $.ajax({
+                        url: route,
+                        method: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            if (data >= 1) {
+                                $('#viewApplicationModal').modal('hide');
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Event Updated!',
+                                    'success'
+                                )
+
+                                $('#viewApplicationForm').trigger('reset');
+                                $('#applicationTableBody').empty();
+                                showApplications();
+                            } else {
+                                $('#viewApplicationForm').modal('hide');
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Nothing Changes!',
+                                    'error'
+                                )
+
+                                $('#editEventForm').trigger('reset');
+                            }
+                        }
+                    })
+                });
+        });
+
         $(document).on('click', "button[name='editEvent']", function () {
             var id = $(this).val();
             var route = "{{ route('administrator.editEvent', ':id')}}";
@@ -971,7 +1041,7 @@ echo request()->getRequestUri();
                 }
             }),
 
-                $(document).on("submit", "#editEventForm", function () {
+                $(document).unbind('submit').on("submit", "#editEventForm", function () {
                     let id = $('#id').val();
                     let status = $('#new_status').val();
 
@@ -1001,7 +1071,7 @@ echo request()->getRequestUri();
 
                                 $('#editEventForm').trigger('reset');
                                 $('#eventTableBody').empty();
-                                showAll();
+                                showEvents();
                             } else {
                                 $('#editEventModal').modal('hide');
                                 Swal.fire(
@@ -1069,48 +1139,48 @@ echo request()->getRequestUri();
 
         $(document).unbind('submit').on("submit", "#addAnnouncementForm", function () {
 
-        var title = $('#title').val();
-        var announcement = $('#announcement').val();
+            var title = $('#title').val();
+            var announcement = $('#announcement').val();
 
-        var formData = new FormData();
-        formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
-        formData.append("from", "ADMIN");
-        formData.append('title', title);
-        formData.append('announcement', announcement);
-        formData.append('status', '1');
+            var formData = new FormData();
+            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+            formData.append("from", "ADMIN");
+            formData.append('title', title);
+            formData.append('announcement', announcement);
+            formData.append('status', '1');
 
-        $.ajax({
-            url: "{{ route('administrator.storeAnnouncement') }}",
-            method: "POST",
-            contentType: false,
-            processData: false,
-            data: formData,
-            success: function (data) {
-                if (data == 1) {
+            $.ajax({
+                url: "{{ route('administrator.storeAnnouncement') }}",
+                method: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (data) {
+                    if (data == 1) {
 
-                    $('#addAnnouncementModal').modal('hide');
-                    Swal.fire(
-                        'Yeeeey!',
-                        'Announcement is posted!',
-                        'success'
-                    )
+                        $('#addAnnouncementModal').modal('hide');
+                        Swal.fire(
+                            'Yeeeey!',
+                            'Announcement is posted!',
+                            'success'
+                        )
 
-                    $('#addAnnouncementForm').trigger('reset');
-                    $('#announcementTableBody').empty();
-                    showAll();
-                } else {
+                        $('#addAnnouncementForm').trigger('reset');
+                        $('#announcementTableBody').empty();
+                        showAll();
+                    } else {
 
-                    $('#addAnnouncementModal').modal('hide');
-                    Swal.fire(
-                        'Eeek!',
-                        'Something went wrong!',
-                        'error'
-                    )
+                        $('#addAnnouncementModal').modal('hide');
+                        Swal.fire(
+                            'Eeek!',
+                            'Something went wrong!',
+                            'error'
+                        )
 
-                    $('#addAnnouncementForm').trigger('reset');
+                        $('#addAnnouncementForm').trigger('reset');
+                    }
                 }
-            }
-        })
+            })
         });
 
         $(document).on('click', "button[name='editAnnouncement']", function () {

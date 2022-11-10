@@ -36,6 +36,8 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-administrators', [App\Http\Controllers\AdministratorController::class, 'getAllAdministrators'])->name('administrator.administrators');
     Route::post('get-applications', [App\Http\Controllers\ApplicationController::class, 'getAllApplications'])->name('administrator.applications');
 
+    Route::resource('/application/view', App\Http\Controllers\ApplicationController::class)->names(['edit' => 'administrator.viewApplication']);
+    Route::resource('/application/update', App\Http\Controllers\ApplicationController::class)->names(['update' => 'administrator.updateApplication']);
     Route::resource('/event/edit', App\Http\Controllers\EventController::class)->names(['edit' => 'administrator.editEvent']);
     Route::resource('/event/update', App\Http\Controllers\EventController::class)->names(['update' => 'administrator.updateEvent']);
     Route::resource('/event/destroy', App\Http\Controllers\EventController::class)->names(['destroy' => 'administrator.destroyEvent']);
@@ -66,5 +68,5 @@ Route::group(["middleware" => "student", "prefix" => "student"], function () {
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'studentView'])->name('student.dashboard');
     Route::get('feed', [App\Http\Controllers\HomeController::class, 'feedTab'])->name('student.feed');
     Route::post('get-events', [App\Http\Controllers\EventController::class, 'getAllEventsNonAuthor'])->name('student.events');
-    Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllAnnouncementsNonAuthor'])->name('student.announcements');
+    Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllActiveAnnouncements'])->name('student.announcements');
 });

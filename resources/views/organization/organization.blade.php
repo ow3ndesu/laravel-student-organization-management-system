@@ -4,7 +4,7 @@ echo request()->getRequestUri();
 @endphp -->
 <div class="container">
     <div class="row justify-content-center">
-        <h3>{{ __("Student Organization") }}</h3>
+        <h3>{{ __($name) }}</h3>
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
@@ -17,11 +17,13 @@ echo request()->getRequestUri();
                             <i class="fas fa-hand-holding-medical" style="margin-right: 3px;"></i>
                             <a href="#Infographics" class="left-nav-links" id="info-link">Infographics</a>
                         </li>
-                        <li @if($status == 'pending') class="list-group-item" @else class="list-group-item disabled" @endif id="app-li">
+                        <li @if($status=='pending' || $status=='disapproved' ) class="list-group-item" @else
+                            class="list-group-item disabled" @endif id="app-li">
                             <i class="fas fa-file-contract" style="margin-right: 3px;"></i>
                             <a href="#Application" class="left-nav-links" id="app-link">Application</a>
                         </li>
-                        <li @if($status == 'renewal') class="list-group-item" @else  class="list-group-item disabled" @endif id="ren-li">
+                        <li @if($status=='renewal' ) class="list-group-item" @else class="list-group-item disabled"
+                            @endif id="ren-li">
                             <i class="fas fa-file-alt" style="margin-right: 3px;"></i>
                             <a href="#Renewal" class="left-nav-links" id="ren-link">Renewal</a>
                         </li>
@@ -36,15 +38,18 @@ echo request()->getRequestUri();
 
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="eve-li">
+                        <li @if($status=='approved' ) class="list-group-item" @else class="list-group-item disabled"
+                            @endif id="eve-li">
                             <i class="fas fa-calendar" style="margin-right: 3px;"></i>
                             <a href="#Events" class="left-nav-links" id="eve-link">Events</a>
                         </li>
-                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="act-li">
+                        <li @if($status=='approved' ) class="list-group-item" @else class="list-group-item disabled"
+                            @endif id="act-li">
                             <i class="fas fa-calendar-check" style="margin-right: 3px;"></i>
                             <a href="#Active" class="left-nav-links" id="act-link">Active Events</a>
                         </li>
-                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="ann-li">
+                        <li @if($status=='approved' ) class="list-group-item" @else class="list-group-item disabled"
+                            @endif id="ann-li">
                             <i class="fas fa-bullhorn" style="margin-right: 3px;"></i>
                             <a href="#Announcements" class="left-nav-links" id="ann-link">Announcements</a>
                         </li>
@@ -59,7 +64,8 @@ echo request()->getRequestUri();
 
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li @if($status == 'approved') class="list-group-item" @else  class="list-group-item disabled" @endif id="off-li">
+                        <li @if($status=='approved' ) class="list-group-item" @else class="list-group-item disabled"
+                            @endif id="off-li">
                             <i class="fas fa-users" style="margin-right: 3px;"></i>
                             <a href="#Officers" class="left-nav-links" id="off-link">Officers & Members</a>
                         </li>
@@ -87,7 +93,8 @@ echo request()->getRequestUri();
                     {{ __("Application") }}
                 </div>
 
-                <div class="card-body" id="applicationMessage">
+                <div class="card-body" @if($status !='disapproved' ) id="applicationMessage" @else
+                    id="disapprovedMessage" @endif>
                     <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
                         @csrf
                         <div class="row">
@@ -99,7 +106,8 @@ echo request()->getRequestUri();
                                                 {{ __("Organization Name :") }}
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="organizationname" id="organizationname" minlength="6" required>
+                                                <input type="text" class="form-control" name="organizationname"
+                                                    id="organizationname" minlength="6" required>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +122,8 @@ echo request()->getRequestUri();
                                     </div>
                                     <div class="card-body text-center">
                                         <!-- <i class="fas fa-plus text-black"></i> -->
-                                        <input type="file" name="applicationform" id="applicationform" accept="application/pdf, application/vnd.ms-excel" required>
+                                        <input type="file" name="applicationform" id="applicationform"
+                                            accept="application/pdf, application/vnd.ms-excel" required>
                                     </div>
                                 </div>
                             </div>
@@ -125,14 +134,15 @@ echo request()->getRequestUri();
                                     </div>
                                     <div class="card-body text-center">
                                         <!-- <i class="fas fa-plus text-black"></i> -->
-                                        <input type="file" name="advisersform" id="advisersform" accept="application/pdf, application/vnd.ms-excel" required>
+                                        <input type="file" name="advisersform" id="advisersform"
+                                            accept="application/pdf, application/vnd.ms-excel" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <input type="submit" class="btn btn-primary" id="submitapplication" value="Apply" >
+                                <input type="submit" class="btn btn-primary" id="submitapplication" value="Apply">
                             </div>
                         </div>
                     </form>
@@ -571,7 +581,6 @@ echo request()->getRequestUri();
 <script>
     $(document).ready(function (e) {
 
-
         $('#info-link').click(function (e) {
             e.stopPropagation();
             e.preventDefault();
@@ -741,10 +750,71 @@ echo request()->getRequestUri();
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Delete</button>
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Cancel</button>
                                 </div>
                             </div>
-                        `)
+                        `);
+                        $("#disapprovedMessage").empty().append(`
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-center">
+                                    {{ __("Your application has been disapproved.") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Remove</button>
+                                </div>
+                            </div>
+                        `);
+
+                        $("#deleteApplication").click(function () {
+                            var id = $(this).val();
+                            var route = "{{ route('application.destroy', ':id')}}";
+                            route = route.replace(":id", id);
+
+                            var formData = new FormData();
+                            formData.append(
+                                "_token",
+                                $('meta[name="csrf-token"]').attr("content")
+                            );
+                            formData.append("_method", "DELETE");
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        url: route,
+                                        contentType: false,
+                                        processData: false,
+                                        type: "POST",
+                                        data: formData,
+                                        success: function (data) {
+                                            showApplication();
+                                            if (data >= 1) {
+                                                Swal.fire(
+                                                    'Yeeeey!',
+                                                    'Application Deleted!',
+                                                    'success'
+                                                )
+                                                showApplication();
+                                            } else {
+                                                Swal.fire(
+                                                    'Eeek!',
+                                                    'Something went wrong!',
+                                                    'error'
+                                                )
+                                            }
+                                        },
+                                    });
+                                }
+                            })
+                        });
                     } else {
                         $("#applicationMessage").empty().append(`
                             <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
@@ -795,7 +865,45 @@ echo request()->getRequestUri();
                                     </div>
                                 </div>
                             </form>
-                        `)
+                        `);
+
+                        $("#applyOrganizationForm").unbind('submit').submit(function () {
+                            var name = $('#organizationname').val();
+                            var applicationform = $("#applicationform")[0].files;
+                            var advisersform = $("#advisersform")[0].files;
+
+                            var formData = new FormData();
+                            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                            formData.append('name', name);
+                            formData.append('applicationform', applicationform[0]);
+                            formData.append('advisersform', advisersform[0]);
+
+                            $.ajax({
+                                url: "{{ route('application.store') }}",
+                                method: "POST",
+                                contentType: false,
+                                processData: false,
+                                data: formData,
+                                success: function (data) {
+                                    $('#applyOrganizationForm').trigger("reset");
+                                    showApplication();
+                                    if (data == 1) {
+                                        Swal.fire(
+                                            'Yeeeey!',
+                                            'Your application is submitted!',
+                                            'success'
+                                        );
+
+                                    } else {
+                                        Swal.fire(
+                                            'Eeek!',
+                                            data[0] || data,
+                                            'error'
+                                        );
+                                    }
+                                }
+                            })
+                        });
                     }
                 }
             })
@@ -825,15 +933,15 @@ echo request()->getRequestUri();
 
                             // These lines of code is to override admin ability to select event status
                             var now = getDateNow(0);
-                            var statusTester = ((data[index]['date_time'].substring(0,10)) === (now.substring(0,10))) ? data[index]['status'] : (parseInt(data[index]['date_time'].replace(/T|-|:/g,'')) < parseInt(now.replace(/T|-|:/g,''))) ? data[index]['status'] = 2 : data[index]['status'];
+                            var statusTester = ((data[index]['date_time'].substring(0, 10)) === (now.substring(0, 10))) ? data[index]['status'] : (parseInt(data[index]['date_time'].replace(/T|-|:/g, '')) < parseInt(now.replace(/T|-|:/g, ''))) ? data[index]['status'] = 2 : data[index]['status'];
                             var edit = ``;
                             if (data[index]['status'] != 2) {
                                 edit = `<button type="button" value="` +
-                                data[index]['id'] +
-                                `" name="editEvent" class="btn btn-primary" id="editEvent" data-bs-toggle="modal" data-bs-target="#editEventModal">
+                                    data[index]['id'] +
+                                    `" name="editEvent" class="btn btn-primary" id="editEvent" data-bs-toggle="modal" data-bs-target="#editEventModal">
                                                 <i class="fas fa-pen"></i>
                                             </button>`;
-                            } 
+                            }
                             // --------------------------------------------------------------------------
 
                             // console.log('db: ', parseInt(data[index]['date_time'].replace(/T|-|:/g,'')), 'now: ', parseInt(now.replace(/T|-|:/g,'')));
@@ -848,7 +956,7 @@ echo request()->getRequestUri();
                                     <td>`+ status + `</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            `+ edit +`
+                                            `+ edit + `
                                             <button type="button" value="` +
                                 data[index]['id'] +
                                 `" name="deleteEvent" class="btn btn-danger between" id="deleteEvent">
@@ -874,8 +982,8 @@ echo request()->getRequestUri();
                             var min = (d.getMinutes() >= 10) ? d.getMinutes() : ('0' + (d.getMinutes()));
                             var date_time = month + ' ' + day + ', ' + d.getFullYear() + '. ' + ((hour > 12) ? hour - 12 : hour) + ':' + min + ' ' + ((hour < 12) ? 'AM' : 'PM');
                             var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : 'Removal';
-                            
-                            if (element.status == 1 && (element.date_time.substring(0,10)) === (now.substring(0,10))) {
+
+                            if (element.status == 1 && (element.date_time.substring(0, 10)) === (now.substring(0, 10))) {
                                 $('#activeEventTableBody').append(
                                     `<tr>
                                         <td>`+ element.name + `</td>
@@ -934,8 +1042,8 @@ echo request()->getRequestUri();
                 }
             })
         }
-        
-        $(document).unbind('submit').on("submit", "#applyOrganizationForm", function () {
+
+        $("#applyOrganizationForm").unbind('submit').submit(function () {
             var name = $('#organizationname').val();
             var applicationform = $("#applicationform")[0].files;
             var advisersform = $("#advisersform")[0].files;
@@ -961,7 +1069,7 @@ echo request()->getRequestUri();
                             'Your application is submitted!',
                             'success'
                         );
-                        
+
                     } else {
                         Swal.fire(
                             'Eeek!',
@@ -973,7 +1081,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on('click', "#deleteApplication", function () {
+        $("#deleteApplication").click(function () {
             var id = $(this).val();
             var route = "{{ route('application.destroy', ':id')}}";
             route = route.replace(":id", id);
@@ -1008,6 +1116,7 @@ echo request()->getRequestUri();
                                     'Application Deleted!',
                                     'success'
                                 )
+                                showApplication();
                             } else {
                                 Swal.fire(
                                     'Eeek!',
@@ -1021,7 +1130,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).unbind('submit').on("submit", "#addEventForm", function () {
+        $("#addEventForm").unbind('submit').submit(function () {
 
             var name = $('#name').val();
             var place = $('#place').val();
@@ -1069,7 +1178,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on('click', "button[name='editEvent']", function () {
+        $("button[name='editEvent']").click(function () {
             var id = $(this).val();
             var route = "{{ route('event.edit', ':id')}}";
             route = route.replace(":id", id);
@@ -1088,7 +1197,7 @@ echo request()->getRequestUri();
                 }
             }),
 
-                $(document).unbind('submit').on("submit", "#editEventForm", function () {
+                $("#editEventForm").unbind('submit').submit(function () {
                     let id = $('#id').val();
                     let name = $('#new_name').val();
                     let place = $('#new_place').val();
@@ -1139,7 +1248,7 @@ echo request()->getRequestUri();
                 });
         });
 
-        $(document).on('click', "button[name='deleteEvent']", function () {
+        $("button[name='deleteEvent']").click(function () {
             var id = $(this).val();
             var route = "{{ route('event.destroy', ':id')}}";
             route = route.replace(":id", id);
@@ -1189,7 +1298,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).unbind('submit').on("submit", "#addAnnouncementForm", function () {
+        $("#addAnnouncementForm").unbind('submit').submit(function () {
 
             var title = $('#title').val();
             var announcement = $('#announcement').val();
@@ -1233,7 +1342,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $(document).on('click', "button[name='editAnnouncement']", function () {
+        $("button[name='editAnnouncement']").click(function () {
             var id = $(this).val();
             var route = "{{ route('announcement.edit', ':id')}}";
             route = route.replace(":id", id);
@@ -1249,7 +1358,7 @@ echo request()->getRequestUri();
                     $('#new_announcement').val(data[0]['announcement']);
                 }
             }),
-                $(document).unbind('submit').on("submit", "#editAnnouncementForm", function () {
+                $("#editAnnouncementForm").unbind('submit').submit(function () {
                     let id = $('#id').val();
                     let title = $('#new_title').val();
                     let announcement = $('#new_announcement').val();
@@ -1296,7 +1405,7 @@ echo request()->getRequestUri();
                 });
         });
 
-        $(document).on('click', "button[name='deleteAnnouncement']", function () {
+        $("button[name='deleteAnnouncement']").click(function () {
             var id = $(this).val();
             var route = "{{ route('announcement.destroy', ':id')}}";
             route = route.replace(":id", id);
