@@ -257,6 +257,24 @@ echo request()->getRequestUri();
                                     </div>
                                     <div class="modal-body">
                                         <div class="row mb-3">
+                                            <label for="image" class="col-md-2 col-form-label ">{{ __('Image')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <input id="image" type="file"
+                                                    class="form-control @error('image') is-invalid @enderror"
+                                                    name="image" value="{{ old('image') }}" required
+                                                    autocomplete="image" minlength="2" autofocus
+                                                    accept="image/png, image/gif, image/jpeg">
+
+                                                @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
                                             <label for="name" class="col-md-2 col-form-label ">{{ __('Name') }}</label>
                                             <div class="col-md-10">
 
@@ -289,13 +307,30 @@ echo request()->getRequestUri();
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="date" class="col-md-2 col-form-label ">{{ __('Date') }}</label>
+                                            <label for="date" class="col-md-2 col-form-label ">{{ __('Date in')
+                                                }}</label>
                                             <div class="col-md-10">
                                                 <input id="date" type="datetime-local"
                                                     class="form-control @error('date') is-invalid @enderror" name="date"
                                                     value="{{ old('date') }}" required autocomplete="date" autofocus>
 
                                                 @error('date')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="dateout" class="col-md-2 col-form-label ">{{ __('Date out')
+                                                }}</label>
+                                            <div class="col-md-10">
+                                                <input id="dateout" type="datetime-local"
+                                                    class="form-control @error('dateout') is-invalid @enderror"
+                                                    name="dateout" value="{{ old('dateout') }}" required
+                                                    autocomplete="dateout" autofocus>
+
+                                                @error('dateout')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -1310,6 +1345,20 @@ echo request()->getRequestUri();
             })
         }
 
+        $('#date').focusout(function () {
+            if ($(this).val() != "") {
+                $('#dateout').prop("min", $(this).val());
+            }
+
+        });
+
+        $('#dateout').focusout(function () {
+            if ($(this).val() != "") {
+                $('#date').prop("max", $(this).val());
+            }
+
+        });
+
         $("#applyOrganizationForm").unbind('submit').submit(function () {
             var name = $('#organizationname').val();
             var applicationform = $("#applicationform")[0].files;
@@ -1441,16 +1490,20 @@ echo request()->getRequestUri();
 
         $("#addEventForm").unbind('submit').submit(function () {
 
+            var image = $("#image")[0].files;
             var name = $('#name').val();
             var place = $('#place').val();
-            var date = $('#date').val();
+            var datein = $('#date').val();
+            var dateout = $('#dateout').val();
             var description = $('#description').val();
 
             var formData = new FormData();
             formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+            formData.append('image', image[0]);
             formData.append('name', name);
             formData.append('place', place);
-            formData.append('date_time', date);
+            formData.append('date_timein', datein);
+            formData.append('date_timeout', dateout);
             formData.append('description', description);
 
             $.ajax({

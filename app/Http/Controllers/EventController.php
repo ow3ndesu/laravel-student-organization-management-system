@@ -38,11 +38,18 @@ class EventController extends Controller
     public function store(Request $request)
     {
         try {
+            $image = $request->file('image');
+            $imagefilename = $request->name . "_Event." . $image->getClientOriginalExtension();
+            $location = "images/events/" . $request->name;
+            $image->move($location, $imagefilename);
+
             $event = new Event();
             $event->user_id = Auth::id();
+            $event->image = $location . "/" . $imagefilename;
             $event->name = $request->name;
             $event->place = $request->place;
-            $event->date_time = $request->date_time;
+            $event->date_time = $request->date_timein;
+            $event->out = $request->date_timeout;
             $event->description = $request->description;
             $event->status = '0';
             $event->save();
