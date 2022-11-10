@@ -179,7 +179,7 @@ echo request()->getRequestUri();
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
                                         <button type="submit" value="Submit" class="btn btn-primary"
-                                            id="editEventSubmitButton">Submit</button>
+                                            id="editApplicationSubmitButton">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -206,7 +206,133 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body">
-                    {{ __("This Feature is Under Development.") }}
+                    <!-- View Renewal Modal -->
+                    <div class="modal fade" id="viewRenewalModal" tabindex="-1" aria-labelledby="viewRenewalModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="viewRenewalForm" action="javascript:void(0);" method="PUT">
+                                    @csrf
+                                    <input type="hidden" name="renewalid" id="renewalid">
+                                    <input type="hidden" name="_method" value="POST">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewApplicationModalLabel">View Renewal</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-2">
+                                            <label for="re_name" class="col-md-2 col-form-label ">{{ __('Name')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <input id="re_name" type="text"
+                                                    class="form-control @error('re_name') is-invalid @enderror"
+                                                    name="re_name" value="{{ old('re_name') }}" required
+                                                    autocomplete="re_name" autofocus readonly>
+
+                                                @error('re_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="re_handler" class="col-md-2 col-form-label ">{{ __('Handler')
+                                                }}</label>
+                                            <div class="col-md-10">
+                                                <input id="re_handler" type="text"
+                                                    class="form-control @error('re_handler') is-invalid @enderror"
+                                                    name="re_handler" value="{{ old('re_handler') }}" required
+                                                    autocomplete="re_handler" autofocus readonly>
+
+                                                @error('re_handler')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2 text-center">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <label for="new_handler" class="col-md-2 col-form-label ">{{
+                                                        __('Files')
+                                                        }}</label>
+                                                    <div class="col-md-5 preview">
+                                                        <a id="renewalletter" target="_blank" rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Renewal Letter</a>
+                                                    </div>
+                                                    <div class="col-md-5 preview">
+                                                        <a id="accomplishmentreport" target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Accomplishment
+                                                            Report</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="new_handler" class="col-md-2 col-form-label ">{{
+                                                        __('')
+                                                        }}</label>
+                                                    <div class="col-md-5 preview">
+                                                        <a id="budgetaryreport" target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Budgetary
+                                                            Report</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <label for="re_status" class="col-md-2 col-form-label ">{{ __('Status')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <select id="re_status"
+                                                    class="form-control @error('re_status') is-invalid @enderror"
+                                                    name="re_status" value="{{ old('re_status') }}" required
+                                                    autocomplete="re_status" autofocus>
+                                                    <option value="0">Pending</option>
+                                                    <option value="1">Approved</option>
+                                                    <option value="2">Renewal</option>
+                                                    <option value="3">Disapproved</option>
+                                                </select>
+
+                                                @error('re_status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" value="Submit" class="btn btn-primary"
+                                            id="editEventSubmitButton">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Organization</th>
+                                <th scope="col">Handler</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="renewalTableBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -753,6 +879,7 @@ echo request()->getRequestUri();
             showEvents();
             showAnnouncements();
             showApplications();
+            showRenewals();
         }
         showAll();
 
@@ -955,6 +1082,44 @@ echo request()->getRequestUri();
                 }
             })
         }
+        function showRenewals() {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: "{{route('administrator.renewals')}}",
+
+                success: function (data) {
+                    if (data.length != 0) {
+                        $('#renewalTableBody').empty();
+                        data.forEach(element => {
+                            var status = (element.status == 2) ? 'Pending' : (element.status == 1) ? 'Renewed' : 'Removal';
+
+                            $('#renewalTableBody').append(`
+                            <tr>
+                                <td>`+ element.name + `</td>
+                                <td>`+ element.user_name + `</td>
+                                <td>`+ status + `</td>
+                                <td  class="text-end">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" value="` + element.id + `" name="viewRenewal" class="btn btn-primary" id="viewRenewal" data-bs-toggle="modal" data-bs-target="#viewRenewalModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button type="button" value="` + element.id + `" name="deleteRenewal" class="btn btn-danger between" id="deleteRenewal">
+                                                <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            `)
+                        });
+                    } else {
+                        $('#renewalTableBody').empty();
+                    }
+                }
+            })
+        }
 
         $(document).on('click', "button[name='viewApplication']", function () {
             var id = $(this).val();
@@ -1015,6 +1180,72 @@ echo request()->getRequestUri();
                                 )
 
                                 $('#editEventForm').trigger('reset');
+                            }
+                        }
+                    })
+                });
+        });
+
+        $(document).on('click', "button[name='viewRenewal']", function () {
+            var id = $(this).val();
+            var route = "{{ route('administrator.viewRenewal', ':id')}}";
+            route = route.replace(":id", id);
+
+            $.ajax({
+                url: route,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (data) {
+                    $('#renewalid').val(data[0]['renewal_id']);
+                    $('#re_name').val(data[0]['name']);
+                    $('#re_handler').val(data[0]['handler'])
+                    $('#renewalletter').attr('href', '../' + data[0].renewal_letter)
+                    $('#accomplishmentreport').attr('href', '../' + data[0].accomplishment_report)
+                    $('#budgetaryreport').attr('href', '../' + data[0].budgetary_report)
+                    $('#re_status').val(data[0]['status'])
+                }
+            }),
+                $(document).unbind('submit').on("submit", "#viewRenewalForm", function () {
+                    let id = $('#renewalid').val();
+                    let status = $('#re_status').val();
+
+                    let route = "{{ route('administrator.updateRenewal', ':id')}}";
+                    route = route.replace(':id', id);
+
+                    let formData = new FormData();
+                    formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                    formData.append("_method", 'PUT');
+                    formData.append("from", "ADMIN");
+                    formData.append('status', status);
+
+                    $.ajax({
+                        url: route,
+                        method: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            if (data >= 1) {
+                                $('#viewRenewalModal').modal('hide');
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Event Updated!',
+                                    'success'
+                                )
+
+                                $('#viewRenewalForm').trigger('reset');
+                                $('#renewalTableBody').empty();
+                                showRenewals();
+                            } else {
+                                $('#viewRenewalForm').modal('hide');
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Nothing Changes!',
+                                    'error'
+                                )
+
+                                $('#viewRenewalForm').trigger('reset');
                             }
                         }
                     })

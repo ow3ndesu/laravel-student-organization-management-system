@@ -176,9 +176,9 @@ class ApplicationController extends Controller
 
             File::deleteDirectory(public_path("files/application/" . $org->name));
 
-            $delfromorg = DB::table('organizations')
-                ->where('id', '=', $org->id)
-                ->delete();
+            // $delfromorg = DB::table('organizations')
+            //     ->where('id', '=', $org->id)
+            //     ->delete();
 
             $delete = DB::table('applications')
                 ->where('id', '=', $id)

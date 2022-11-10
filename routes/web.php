@@ -35,9 +35,12 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-students', [App\Http\Controllers\StudentController::class, 'getAllStudents'])->name('administrator.students');
     Route::post('get-administrators', [App\Http\Controllers\AdministratorController::class, 'getAllAdministrators'])->name('administrator.administrators');
     Route::post('get-applications', [App\Http\Controllers\ApplicationController::class, 'getAllApplications'])->name('administrator.applications');
+    Route::post('get-renewals', [App\Http\Controllers\RenewalController::class, 'getAllRenewals'])->name('administrator.renewals');
 
     Route::resource('/application/view', App\Http\Controllers\ApplicationController::class)->names(['edit' => 'administrator.viewApplication']);
     Route::resource('/application/update', App\Http\Controllers\ApplicationController::class)->names(['update' => 'administrator.updateApplication']);
+    Route::resource('/renewal/view', App\Http\Controllers\RenewalController::class)->names(['edit' => 'administrator.viewRenewal']);
+    Route::resource('/renewal/update', App\Http\Controllers\RenewalController::class)->names(['update' => 'administrator.updateRenewal']);
     Route::resource('/event/edit', App\Http\Controllers\EventController::class)->names(['edit' => 'administrator.editEvent']);
     Route::resource('/event/update', App\Http\Controllers\EventController::class)->names(['update' => 'administrator.updateEvent']);
     Route::resource('/event/destroy', App\Http\Controllers\EventController::class)->names(['destroy' => 'administrator.destroyEvent']);
@@ -58,9 +61,11 @@ Route::group(["middleware" => "organization", "prefix" => "organization"], funct
     Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllAnnouncements'])->name('organization.announcements');
     Route::post('get-organizations', [App\Http\Controllers\OrganizationController::class, 'getAllOrganizations'])->name('organization.organizations');
     Route::post('get-application', [App\Http\Controllers\ApplicationController::class, 'getMyApplication'])->name('organization.myapplication');
+    Route::post('get-renewal', [App\Http\Controllers\RenewalController::class, 'getMyRenewal'])->name('organization.myrenewal');
 
     Route::resource('/organization/event', App\Http\Controllers\EventController::class);
     Route::resource('/organization/application', App\Http\Controllers\ApplicationController::class);
+    Route::resource('/organization/renewal', App\Http\Controllers\RenewalController::class);
     Route::resource('/organization/announcement', App\Http\Controllers\AnnouncementController::class);
 });
 

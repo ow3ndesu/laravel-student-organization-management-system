@@ -154,8 +154,76 @@ echo request()->getRequestUri();
                     {{ __("Renewal") }}
                 </div>
 
-                <div class="card-body">
-                    {{ __("This Feature is Under Development.") }}
+                <div class="card-body" @if($status !='disapproved' ) id="renewalMessage" @else id="redisapprovedMessage"
+                    @endif>
+                    <form id="renewalOrganizationForm" action="javascript:void(0);" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{ __("Organization Name :") }}
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" name="reorganizationname"
+                                                    id="reorganizationname" minlength="6" value="{{ __($name) }}"
+                                                    disabled required>
+                                                <input type="hidden" name="organizationid" id="organizationid"
+                                                    value="{{ __($organizationid) }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ __("Renewal Letter") }}
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <!-- <i class="fas fa-plus text-black"></i> -->
+                                        <input type="file" name="renewalletter" id="renewalletter"
+                                            accept="application/pdf, application/vnd.ms-excel" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ __("Accomplishment Report") }}
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <!-- <i class="fas fa-plus text-black"></i> -->
+                                        <input type="file" name="accomplishmentreport" id="accomplishmentreport"
+                                            accept="application/pdf, application/vnd.ms-excel" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ __("Budgetary Report") }}
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <!-- <i class="fas fa-plus text-black"></i> -->
+                                        <input type="file" name="budgetaryreport" id="budgetaryreport"
+                                            accept="application/pdf, application/vnd.ms-excel" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <input type="submit" class="btn btn-primary" id="submitrenewal" value="Renew">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -727,6 +795,7 @@ echo request()->getRequestUri();
 
         function showAll() {
             showApplication();
+            showRenewal();
             showEvents();
             showAnnouncements();
         }
@@ -802,7 +871,6 @@ echo request()->getRequestUri();
                                                     'Application Deleted!',
                                                     'success'
                                                 )
-                                                showApplication();
                                             } else {
                                                 Swal.fire(
                                                     'Eeek!',
@@ -891,6 +959,205 @@ echo request()->getRequestUri();
                                         Swal.fire(
                                             'Yeeeey!',
                                             'Your application is submitted!',
+                                            'success'
+                                        );
+
+                                    } else {
+                                        Swal.fire(
+                                            'Eeek!',
+                                            data[0] || data,
+                                            'error'
+                                        );
+                                    }
+                                }
+                            })
+                        });
+                    }
+                }
+            })
+        }
+        function showRenewal() {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: "{{route('organization.myrenewal')}}",
+
+                success: function (data) {
+                    if (data.length !== 0) {
+                        $("#renewalMessage").empty().append(`
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-center">
+                                    {{ __("Please wait for approval.") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-danger" name="deleteRenewal" id="deleteRenewal" value="` + data[0].id + `">Cancel</button>
+                                </div>
+                            </div>
+                        `);
+                        $("#redisapprovedMessage").empty().append(`
+                            <div class="row mb-3">
+                                <div class="col-md-12 text-center">
+                                    {{ __("Your application has been disapproved.") }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Remove</button>
+                                </div>
+                            </div>
+                        `);
+
+                        $("#deleteRenewal").click(function () {
+                            var id = $(this).val();
+                            var route = "{{ route('renewal.destroy', ':id')}}";
+                            route = route.replace(":id", id);
+
+                            var formData = new FormData();
+                            formData.append(
+                                "_token",
+                                $('meta[name="csrf-token"]').attr("content")
+                            );
+                            formData.append("_method", "DELETE");
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        url: route,
+                                        contentType: false,
+                                        processData: false,
+                                        type: "POST",
+                                        data: formData,
+                                        success: function (data) {
+                                            showRenewal();
+                                            if (data >= 1) {
+                                                Swal.fire(
+                                                    'Yeeeey!',
+                                                    'Application Deleted!',
+                                                    'success'
+                                                )
+                                            } else {
+                                                Swal.fire(
+                                                    'Eeek!',
+                                                    'Something went wrong!',
+                                                    'error'
+                                                )
+                                            }
+                                        },
+                                    });
+                                }
+                            })
+                        });
+                    } else {
+                        $("#renewalMessage").empty().append(`
+                            <form id="renewalOrganizationForm" action="javascript:void(0);" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        {{ __("Organization Name :") }}
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" name="reorganizationname"
+                                                            id="reorganizationname" minlength="6" value="{{ __($name) }}"
+                                                            disabled required>
+                                                        <input type="hidden" name="organizationid" id="organizationid"
+                                                            value="{{ __($organizationid) }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {{ __("Renewal Letter") }}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <!-- <i class="fas fa-plus text-black"></i> -->
+                                                <input type="file" name="renewalletter" id="renewalletter"
+                                                    accept="application/pdf, application/vnd.ms-excel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {{ __("Accomplishment Report") }}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <!-- <i class="fas fa-plus text-black"></i> -->
+                                                <input type="file" name="accomplishmentreport" id="accomplishmentreport"
+                                                    accept="application/pdf, application/vnd.ms-excel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                {{ __("Budgetary Report") }}
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <!-- <i class="fas fa-plus text-black"></i> -->
+                                                <input type="file" name="budgetaryreport" id="budgetaryreport"
+                                                    accept="application/pdf, application/vnd.ms-excel" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <input type="submit" class="btn btn-primary" id="submitrenewal" value="Renew">
+                                    </div>
+                                </div>
+                            </form>
+                        `);
+
+                        $("#renewalOrganizationForm").unbind('submit').submit(function () {
+                            var name = $('#reorganizationname').val();
+                            var organizationid = $('#organizationid').val();
+                            var renewalletter = $("#renewalletter")[0].files;
+                            var accomplishmentreport = $("#accomplishmentreport")[0].files;
+                            var budgetaryreport = $("#budgetaryreport")[0].files;
+
+                            var formData = new FormData();
+                            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                            formData.append('name', name);
+                            formData.append('organizationid', organizationid);
+                            formData.append('renewalletter', renewalletter[0]);
+                            formData.append('accomplishmentreport', accomplishmentreport[0]);
+                            formData.append('budgetaryreport', budgetaryreport[0]);
+
+                            $.ajax({
+                                url: "{{ route('renewal.store') }}",
+                                method: "POST",
+                                contentType: false,
+                                processData: false,
+                                data: formData,
+                                success: function (data) {
+                                    $('#renewalOrganizationForm').trigger("reset");
+                                    showRenewal();
+                                    if (data == 1) {
+                                        Swal.fire(
+                                            'Yeeeey!',
+                                            'Your renewal is submitted!',
                                             'success'
                                         );
 
@@ -1067,6 +1334,48 @@ echo request()->getRequestUri();
                         Swal.fire(
                             'Yeeeey!',
                             'Your application is submitted!',
+                            'success'
+                        );
+
+                    } else {
+                        Swal.fire(
+                            'Eeek!',
+                            data[0] || data,
+                            'error'
+                        );
+                    }
+                }
+            })
+        });
+
+        $("#renewalOrganizationForm").unbind('submit').submit(function () {
+            var name = $('#organizationname').val();
+            var organizationid = $('#organizationid').val();
+            var renewalletter = $("#renewalletter")[0].files;
+            var accomplishmentreport = $("#accomplishmentreport")[0].files;
+            var budgetaryreport = $("#budgetaryreport")[0].files;
+
+            var formData = new FormData();
+            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+            formData.append('name', name);
+            formData.append('organizationid', organizationid);
+            formData.append('renewalletter', renewalletter[0]);
+            formData.append('accomplishmentreport', accomplishmentreport[0]);
+            formData.append('budgetaryreport', budgetaryreport[0]);
+
+            $.ajax({
+                url: "{{ route('renewal.store') }}",
+                method: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (data) {
+                    $('#renewalOrganizationForm').trigger("reset");
+                    showRenewal();
+                    if (data == 1) {
+                        Swal.fire(
+                            'Yeeeey!',
+                            'Your renewal is submitted!',
                             'success'
                         );
 
