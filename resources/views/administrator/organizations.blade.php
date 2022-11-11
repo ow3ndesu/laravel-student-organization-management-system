@@ -77,7 +77,17 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body" id="infographics-container">
-                    <img src="{{ asset('img/admin-orgs-infographics.svg') }}" alt="All you need to know">
+                    <div id="slider">
+                        <ul id="slideWrap">
+                            <li><img src="{{ asset('img/infographics.svg') }}" alt=""></li>
+                            @foreach($events as $row)
+                            <li><img class="bd-placeholder-img" src="{{asset("{$row->image}")}}" alt="">
+                            </li>
+                            @endforeach
+                        </ul>
+                        <a id="prev" href="#">&#8810;</a>
+                        <a id="next" href="#">&#8811;</a>
+                    </div>
                 </div>
             </div>
 
@@ -718,6 +728,7 @@ echo request()->getRequestUri();
 </div>
 </div>
 
+<script src="{{ asset('js/carousel.js') }}"></script>
 <script>
     $(document).ready(function (e) {
 

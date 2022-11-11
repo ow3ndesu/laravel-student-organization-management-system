@@ -48,7 +48,11 @@ class HomeController extends Controller
 
     public function organizationsTab()
     {
-        return view('administrator.organizations');
+        $events  = DB::table('events')
+            ->select('*')
+            ->get();
+
+        return view('administrator.organizations', ["events" => $events]);
     }
 
     public function studentsTab()
@@ -78,7 +82,11 @@ class HomeController extends Controller
             ->where('user_id', '=', Auth::id())
             ->first();
 
-        return view('organization.organization', ["status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => ($organization->status == 1 || $organization->status == 2 ? $organization->name : "Student Organization"), "organizationid" => $organization->id]);
+        $events  = DB::table('events')
+            ->select('*')
+            ->get();
+
+        return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => ($organization->status == 1 || $organization->status == 2 ? $organization->name : "Student Organization"), "organizationid" => $organization->id]);
     }
 
     protected function update(Request $data)

@@ -39,13 +39,13 @@ class EventController extends Controller
     {
         try {
             $image = $request->file('image');
-            $imagefilename = $request->name . "_Event." . $image->getClientOriginalExtension();
-            $location = "images/events/" . $request->name;
+            $imagefilename = str_replace("-", " ", strtolower($request->name)) . "_event." . $image->getClientOriginalExtension();
+            $location = "images/events/";
             $image->move($location, $imagefilename);
 
             $event = new Event();
             $event->user_id = Auth::id();
-            $event->image = $location . "/" . $imagefilename;
+            $event->image = $location . $imagefilename;
             $event->name = $request->name;
             $event->place = $request->place;
             $event->date_time = $request->date_timein;

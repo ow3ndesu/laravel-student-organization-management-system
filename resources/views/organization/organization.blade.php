@@ -84,7 +84,17 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body" id="infographics-container">
-                    <img src="{{ asset('img/infographics.svg') }}" alt="All you need to know">
+                    <div id="slider">
+                        <ul id="slideWrap">
+                            <li><img src="{{ asset('img/infographics.svg') }}" alt=""></li>
+                            @foreach($events as $row)
+                            <li><img class="bd-placeholder-img" src="{{asset("{$row->image}")}}" alt="">
+                            </li>
+                            @endforeach
+                        </ul>
+                        <a id="prev" href="#">&#8810;</a>
+                        <a id="next" href="#">&#8811;</a>
+                    </div>
                 </div>
             </div>
 
@@ -93,7 +103,7 @@ echo request()->getRequestUri();
                     {{ __("Application") }}
                 </div>
 
-                <div class="card-body" @if($status !='disapproved' ) id="applicationMessage" @else
+                <div class="card-body" @if($status !=' disapproved' ) id="applicationMessage" @else
                     id="disapprovedMessage" @endif>
                     <form id="applyOrganizationForm" action="javascript:void(0);" method="POST">
                         @csrf
@@ -275,7 +285,8 @@ echo request()->getRequestUri();
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="name" class="col-md-2 col-form-label ">{{ __('Name') }}</label>
+                                            <label for="name" class="col-md-2 col-form-label ">{{ __('Name')
+                                                }}</label>
                                             <div class="col-md-10">
 
                                                 <input id="name" type="text"
@@ -461,6 +472,7 @@ echo request()->getRequestUri();
                     <table class="table">
                         <thead>
                             <tr>
+                                <th scope="col">Image</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Place</th>
                                 <th scope="col">Date</th>
@@ -581,7 +593,8 @@ echo request()->getRequestUri();
                                     <input type="hidden" name="_method" value="PUT">
 
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editAnnouncementModalLabel">Edit Announcement</h5>
+                                        <h5 class="modal-title" id="editAnnouncementModalLabel">Edit Announcement
+                                        </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -681,6 +694,7 @@ echo request()->getRequestUri();
 </div>
 </div>
 
+<script src="{{ asset('js/carousel.js') }}"></script>
 <script>
     $(document).ready(function (e) {
 
@@ -829,6 +843,7 @@ echo request()->getRequestUri();
         }
 
         function showAll() {
+            // responsiveSlider();
             showApplication();
             showRenewal();
             showEvents();
@@ -1249,9 +1264,12 @@ echo request()->getRequestUri();
                             // console.log('db: ', parseInt(data[index]['date_time'].replace(/T|-|:/g,'')), 'now: ', parseInt(now.replace(/T|-|:/g,'')));
 
                             var status = (data[index]['status'] == 0) ? 'Pending' : (data[index]['status'] == 1) ? 'Approved' : 'Removal';
+                            const imageurl = data[index]['image'];
+                            const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="50" height="50" style="border-radius: 50%">`;
 
                             $('#eventTableBody').append(
                                 `<tr>
+                                    <td>`+ image + `</td>
                                     <td>`+ data[index]['name'] + `</td>
                                     <td>`+ data[index]['place'] + `</td>
                                     <td>`+ date_time + `</td>
@@ -1268,7 +1286,6 @@ echo request()->getRequestUri();
                                     </td>
                                 </tr>`
                             )
-
                         }
 
                         // Active Events
@@ -1285,9 +1302,13 @@ echo request()->getRequestUri();
                             var date_time = month + ' ' + day + ', ' + d.getFullYear() + '. ' + ((hour > 12) ? hour - 12 : hour) + ':' + min + ' ' + ((hour < 12) ? 'AM' : 'PM');
                             var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : 'Removal';
 
+                            const imageurl = data[index]['image'];
+                            const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="50" height="50" style="border-radius: 50%">`;
+
                             if (element.status == 1 && (element.date_time.substring(0, 10)) === (now.substring(0, 10))) {
                                 $('#activeEventTableBody').append(
                                     `<tr>
+                                        <td>`+ image + `</td>
                                         <td>`+ element.name + `</td>
                                         <td>`+ element.place + `</td>
                                         <td>`+ date_time + `</td>
@@ -1302,6 +1323,7 @@ echo request()->getRequestUri();
                 }
             });
         }
+
         function showAnnouncements() {
             $.ajax({
                 method: 'POST',
