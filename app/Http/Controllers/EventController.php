@@ -39,7 +39,7 @@ class EventController extends Controller
     {
         try {
             $image = $request->file('image');
-            $imagefilename = str_replace("-", " ", strtolower($request->name)) . "_event." . $image->getClientOriginalExtension();
+            $imagefilename = strtolower(str_replace(" ", "-", $request->name)) . "_event." . $image->getClientOriginalExtension();
             $location = "images/events/";
             $image->move($location, $imagefilename);
 
@@ -51,7 +51,6 @@ class EventController extends Controller
             $event->date_time = $request->date_timein;
             $event->out = $request->date_timeout;
             $event->description = $request->description;
-            $event->status = '0';
             $event->save();
 
             if ($event) {
@@ -130,7 +129,8 @@ class EventController extends Controller
                     ->update([
                         "name" => $request->name,
                         "place" => $request->place,
-                        "date_time" => $request->date_time,
+                        "date_time" => $request->date_timein,
+                        "out" => $request->date_timeout,
                         "description" => $request->description,
                     ]);
 

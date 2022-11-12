@@ -133,8 +133,12 @@
                     var min = (d.getMinutes() >= 10) ? d.getMinutes() : ('0' + (d.getMinutes()));
                     var date_time = month + ' ' + day + ', ' + d.getFullYear() + '. ' + ((hour > 12) ? hour - 12 : hour) + ':' + min + ' ' + ((hour < 12) ? 'AM' : 'PM');
 
+                    var teststart = Date.parse(element.date_time);
+                    const testnow = Date.now();
+                    var testend = Date.parse(element.out);
 
-                    $('#events').append(`
+                    if ((element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) || (element.status == 1 && (parseInt(teststart) >= parseInt(testnow)))) {
+                        $('#events').append(`
                                     <hr style="width: 10%; height: 5px;">
                                     <div class="row">
                                         <div class="row">
@@ -150,7 +154,8 @@
                                             </div>
                                         </div>
                                     </div>
-                    `)
+                        `)
+                    }
                 });
 
             } else {
@@ -162,7 +167,8 @@
             if (announcements.length != 0) {
                 $('#announcements').empty();
                     announcements.forEach(element => {
-                        $('#announcements').append(`
+                        if (element.status == 1) {
+                            $('#announcements').append(`
                                         <hr style="width: 10%; height: 5px;">
                                         <div class="row">
                                             <div class="row">
@@ -178,7 +184,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                        `);
+                            `);
+                        }
                 });
             } else {
                 $('#announcements').append(`

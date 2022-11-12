@@ -398,16 +398,30 @@ echo request()->getRequestUri();
                                     </div>
                                     <div class="modal-body">
                                         <div class="row mb-3">
-                                            <label for="new_name" class="col-md-2 col-form-label ">{{ __('Name')
+                                            <div class="col-md-12">
+
+                                                <div id="imagedata" class="" style="width: 300px; margin: auto;">
+
+                                                </div>
+
+                                                @error('image')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="new_eventname" class="col-md-2 col-form-label ">{{ __('Name')
                                                 }}</label>
                                             <div class="col-md-10">
 
-                                                <input id="new_name" type="text"
-                                                    class="form-control @error('new_name') is-invalid @enderror"
-                                                    name="new_name" value="{{ old('new_name') }}" required
-                                                    autocomplete="new_name" autofocus readonly>
+                                                <input id="new_eventname" type="text"
+                                                    class="form-control @error('new_eventname') is-invalid @enderror"
+                                                    name="new_eventname" value="{{ old('new_eventname') }}" required
+                                                    autocomplete="new_eventname" autofocus readonly>
 
-                                                @error('new_name')
+                                                @error('new_eventname')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -431,7 +445,7 @@ echo request()->getRequestUri();
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="new_date" class="col-md-2 col-form-label ">{{ __('Date')
+                                            <label for="new_date" class="col-md-2 col-form-label ">{{ __('Time in')
                                                 }}</label>
                                             <div class="col-md-10">
                                                 <input id="new_date" type="datetime-local"
@@ -440,6 +454,22 @@ echo request()->getRequestUri();
                                                     autocomplete="new_date" min="" autofocus readonly>
 
                                                 @error('new_date')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="new_dateout" class="col-md-2 col-form-label ">{{ __('Time out')
+                                                }}</label>
+                                            <div class="col-md-10">
+                                                <input id="new_dateout" type="datetime-local"
+                                                    class="form-control @error('new_dateout') is-invalid @enderror"
+                                                    name="new_dateout" value="{{ old('new_dateout') }}" required
+                                                    autocomplete="new_dateout" min="" autofocus readonly>
+
+                                                @error('new_dateout')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -498,6 +528,7 @@ echo request()->getRequestUri();
                     <table class="table">
                         <thead>
                             <tr>
+                                <th scope="col">Image</th>
                                 <th scope="col">Organization</th>
                                 <th scope="col">Event</th>
                                 <th scope="col">Date</th>
@@ -936,6 +967,7 @@ echo request()->getRequestUri();
 
                 success: function (data) {
                     // Events
+                    console.log(data)
                     if (data.length != 0) {
                         for (let index = 0; index < data.length; index++) {
                             var d = new Date(data[index]['date_time']);
@@ -949,7 +981,12 @@ echo request()->getRequestUri();
                             var date_time = month + ' ' + day + ', ' + d.getFullYear() + '. ' + ((hour > 12) ? hour - 12 : hour) + ':' + min + ' ' + ((hour < 12) ? 'AM' : 'PM');
 
                             var now = getDateNow(0);
-                            var statusTester = ((data[index]['date_time'].substring(0, 10)) === (now.substring(0, 10))) ? data[index]['status'] : (parseInt(data[index]['date_time'].replace(/T|-|:/g, '')) < parseInt(now.replace(/T|-|:/g, ''))) ? data[index]['status'] = 2 : data[index]['status'];
+
+                            var teststart = Date.parse(data[index]['date_time']);
+                            const testnow = Date.now();
+                            var testend = Date.parse(data[index]['out']);
+                            
+                            var statusTester = ((data[index]['status'] == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow)))) ? data[index]['status'] : (data[index]['status'] == 1 && (parseInt(testend) <= parseInt(testnow))) ? data[index]['status'] = 2 : data[index]['status'];
                             var edit = ``;
                             if (data[index]['status'] != 2) {
                                 edit = `<button type="button" value="` +
@@ -959,10 +996,14 @@ echo request()->getRequestUri();
                                             </button>`;
                             }
 
+                            // console.log(data[index])
                             var status = (data[index]['status'] == 0) ? 'Pending' : (data[index]['status'] == 1) ? 'Approved' : 'Removal';
+                            const imageurl = data[index]['image'];
+                            const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="50" height="50" style="border-radius: 50%">`;
 
                             $('#eventTableBody').append(
                                 `<tr>
+                                    <td>`+ image + `</td>
                                     <td>`+ data[index]['author'] + `</td>
                                     <td>`+ data[index]['name'] + `</td>
                                     <td>`+ date_time + `</td>
@@ -1274,10 +1315,15 @@ echo request()->getRequestUri();
                     _token: $('meta[name="csrf-token"]').attr("content"),
                 },
                 success: function (data) {
+                    const link = data[0]['image'];
                     $('#id').val(data[0]['id']);
-                    $('#new_name').val(data[0]['name']);
+                    $('#imagedata').empty().append(`
+                        <img class="bd-placeholder-img" src="{{asset('` + link + `')}}" alt="" width="100%" style="border-radius: 10px">
+                    `);
+                    $('#new_eventname').val(data[0]['name']);
                     $('#new_place').val(data[0]['place']);
                     $('#new_date').val(data[0]['date_time']);
+                    $('#new_dateout').val(data[0]['out']);
                     $('#new_description').val(data[0]['description'])
                     $('#new_status').val(data[0]['status'])
                 }

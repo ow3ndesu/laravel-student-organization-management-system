@@ -151,13 +151,21 @@
                 url: "{{route('administrator.events')}}",
                 success: function (data) {
                     data.forEach(element => {
-                        if ( element.date_time > date_time) {
+                        var teststart = Date.parse(element.date_time);
+                        const testnow = Date.now();
+                        var testend = Date.parse(element.out);
+                        
+                        if ((element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) || (element.status == 1 && (parseInt(teststart) >= parseInt(testnow)))) {
                             incomingEvents++;
                         }
                     });
                     
                     data.forEach(element => {
-                        if ((element.date_time.substring(0, 10)) === (date_time.substring(0, 10))) {
+                        var teststart = Date.parse(element.date_time);
+                        const testnow = Date.now();
+                        var testend = Date.parse(element.out);
+                        
+                        if (element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) {
                             activeEvents++; 
                         }
                     });

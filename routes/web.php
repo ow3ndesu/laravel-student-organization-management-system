@@ -73,5 +73,5 @@ Route::group(["middleware" => "student", "prefix" => "student"], function () {
     Route::get('dashboard', [App\Http\Controllers\HomeController::class, 'studentView'])->name('student.dashboard');
     Route::get('feed', [App\Http\Controllers\HomeController::class, 'feedTab'])->name('student.feed');
     Route::post('get-events', [App\Http\Controllers\EventController::class, 'getAllEventsNonAuthor'])->name('student.events');
-    Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllActiveAnnouncements'])->name('student.announcements');
+    Route::post('get-announcements', [App\Http\Controllers\AnnouncementController::class, 'getAllActiveAnnouncementsNonAuthor'])->name('student.announcements');
 });

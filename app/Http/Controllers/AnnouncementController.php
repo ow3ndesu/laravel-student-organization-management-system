@@ -101,6 +101,16 @@ class AnnouncementController extends Controller
         return response()->json($active);
     }
 
+    public function getAllActiveAnnouncementsNonAuthor()
+    {
+        $all = DB::table('announcements')
+            ->select('announcements.*', 'users.name as author', 'users.email')
+            ->join('users', 'users.id', '=', 'announcements.user_id')
+            ->where('status', '=', '1')
+            ->get();
+        return response()->json($all);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
