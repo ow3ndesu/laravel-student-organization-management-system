@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2022 at 08:51 PM
+-- Generation Time: Nov 13, 2022 at 05:07 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -42,8 +42,9 @@ CREATE TABLE `announcements` (
 --
 
 INSERT INTO `announcements` (`id`, `user_id`, `title`, `announcement`, `status`, `created_at`, `updated_at`) VALUES
-(3, '1', 'Hey', 'Yow', '0', '2022-05-01 21:42:31', '2022-05-01 21:42:31'),
-(8, '8', 'DSVS', 'VDSVSSD', '0', '2022-09-19 06:31:18', '2022-09-19 06:31:18');
+(8, '8', 'DSVS', 'VDSVSSD', '1', '2022-09-19 06:31:18', '2022-09-19 06:31:18'),
+(9, '22', 'ptest', 'teadkjbak', '1', '2022-10-04 05:43:28', '2022-10-04 05:43:28'),
+(10, '23', 'BEEd Annual Poem Qriting Contest', 'Halika na, sulat na!', '0', '2022-11-11 22:02:22', '2022-11-11 22:02:22');
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,67 @@ CREATE TABLE `applications` (
 --
 
 INSERT INTO `applications` (`id`, `user_id`, `organization_id`, `application_form`, `advisers_commitment_form`, `submitted_at`, `administrator_id`, `modified_at`, `created_at`, `updated_at`) VALUES
-(17, 1, 12, 'files/application/Student Organization/Student Organization_ApplicationForm.pdf', 'files/application/Student Organization/Student Organization_AdvisersCommitmentForm.pdf', '10/01/2022', NULL, NULL, '2022-10-01 10:41:00', '2022-10-01 10:41:00');
+(22, 23, 18, 'files/application/Bacherlor of Elementary Education/Bacherlor of Elementary Education_ApplicationForm.pdf', 'files/application/Bacherlor of Elementary Education/Bacherlor of Elementary Education_AdvisersCommitmentForm.pdf', '11/12/2022', 8, '11/12/2022', '2022-11-11 21:43:14', '2022-11-11 21:43:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `archive_announcements`
+--
+
+CREATE TABLE `archive_announcements` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `announcement_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `announcement` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `announcement_created_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `announcement_updated_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `archive_events`
+--
+
+CREATE TABLE `archive_events` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `place` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `out` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `event_created_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `event_updated_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `archive_organizations`
+--
+
+CREATE TABLE `archive_organizations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `organization_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `organization_created_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `organization_updated_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -80,11 +141,13 @@ INSERT INTO `applications` (`id`, `user_id`, `organization_id`, `application_for
 CREATE TABLE `events` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `place` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `out` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -93,13 +156,11 @@ CREATE TABLE `events` (
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`id`, `user_id`, `name`, `place`, `date_time`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(7, 1, 'Zumba', 'NEUST-MGT', '2022-05-07T16:10', 'There is another Zumba dance event we\'re sharing! Come join us.', '1', '2022-05-06 00:11:51', '2022-05-06 00:11:51'),
-(8, 1, 'Test Event', 'NEUST', '2022-05-11T09:32', 'nOW', '1', '2022-05-10 17:32:53', '2022-05-10 17:32:53'),
-(10, 18, 'kay pangalawa', 'kahit saan', '2022-05-13T07:30', 'subok', '1', '2022-05-12 07:28:02', '2022-05-12 07:28:02'),
-(11, 18, 'try', 'hakdas', '2022-05-14T23:39', 'nsalnad', '1', '2022-05-12 07:39:54', '2022-05-12 07:39:54'),
-(12, 1, 'acaca', 'cacas', '2022-05-12T23:57', 'sascac', '1', '2022-05-12 07:51:34', '2022-05-12 07:51:34'),
-(15, 1, 'test', 'test', '2022-09-20T10:01', 'test', '2', '2022-09-19 06:01:39', '2022-09-19 06:01:39');
+INSERT INTO `events` (`id`, `user_id`, `image`, `name`, `place`, `date_time`, `out`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(22, 1, 'images/events/astro world convention_event.jpg', 'Astro World Convention', 'Gymnasium', '2022-11-23T09:30', '2022-11-23T16:00', 'Ultimate Rock and Roll', 1, '2022-11-11 07:14:38', '2022-11-11 07:14:38'),
+(23, 1, 'images/events/it convention_event.jpg', 'IT Convention', 'Laboratory', '2022-11-10T11:17', '2022-11-11T16:22', 'Let\'s go immerge to IT Industry', 0, '2022-11-11 07:18:28', '2022-11-11 07:18:28'),
+(24, 1, 'images/events/vr-contest_event.jpg', 'VR Contest', 'Laboratory', '2022-11-13T13:02', '2022-11-14T08:02', 'Go nuts!', 0, '2022-11-11 16:03:20', '2022-11-11 16:03:20'),
+(27, 23, 'images/events/annual-poem-writing-contest_event.jpeg', 'Annual Poem Writing Contest', 'Campus', '2022-11-13T00:00', '2022-11-14T00:00', 'Write it out!', 1, '2022-11-11 21:59:16', '2022-11-11 21:59:16');
 
 -- --------------------------------------------------------
 
@@ -141,7 +202,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (50, '2022_04_29_004516_create_organizations_table', 1),
 (51, '2022_04_30_101256_create_events_table', 1),
 (52, '2022_05_02_033050_create_announcements_table', 1),
-(55, '2022_10_01_122456_create_applications_table', 2);
+(55, '2022_10_01_122456_create_applications_table', 2),
+(60, '2022_11_12_082702_create_archive_organizations_table', 3),
+(61, '2022_11_10_165754_create_renewals_table', 4),
+(62, '2022_11_12_080626_create_archive_events_table', 5),
+(63, '2022_11_12_082817_create_archive_announcements_table', 6);
 
 -- --------------------------------------------------------
 
@@ -163,7 +228,9 @@ CREATE TABLE `organizations` (
 --
 
 INSERT INTO `organizations` (`id`, `user_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(12, 1, 'Student Organization', 0, '2022-10-01 10:41:00', '2022-10-01 10:41:00');
+(5, 24, 'test', 0, '2022-11-11 21:34:56', '2022-11-11 21:34:56'),
+(17, 1, 'Bachelor Of Science in Information Technology', 1, NULL, NULL),
+(18, 23, 'Bachelor of Elementary Education', 1, '2022-11-11 21:43:14', '2022-11-11 21:55:40');
 
 -- --------------------------------------------------------
 
@@ -198,6 +265,26 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `renewals`
+--
+
+CREATE TABLE `renewals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `organization_id` int(11) NOT NULL,
+  `renewal_letter` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `accomplishment_report` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `budgetary_report` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `submitted_at` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `administrator_id` int(11) DEFAULT NULL,
+  `modified_at` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -221,7 +308,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ty
 (1, 'Test Org', 'testorg@email.com', NULL, '$2y$10$sWi3i8YRKsrji.cJaS0kVeBdBjjjw3XT6BOg1f1DXwI3fTvPfhwXy', 'Organization', NULL, NULL, NULL),
 (2, 'Test Student', 'teststud@email.com', NULL, '$2y$10$eSJFdvrOU0YwgNu8YyZuZ.1Z9xcKWKjEmBDaEUVPU08DclwCZcBPS', 'Student', NULL, NULL, NULL),
 (8, 'Test Administrator', 'testadmin@email.com', NULL, '$2y$10$sWi3i8YRKsrji.cJaS0kVeBdBjjjw3XT6BOg1f1DXwI3fTvPfhwXy', 'Administrator', NULL, NULL, NULL),
-(18, 'Test Org 2', 'testorg2@email.com', NULL, '$2y$10$gmeQ8Oh0Yid03Ny/YbCSZuncGM8hIcfqeiLRVf5SNufiJSyMHso0G', 'Organization', NULL, '2022-05-12 07:26:28', '2022-05-12 07:26:28');
+(23, 'BEEd Handler', 'testorg2@email.com', NULL, '$2y$10$yCqzmEp0/VNWn/IX6ZhTyezD2a6sc0DB95H.tvNb0L5tsmf3qdymu', 'Organization', NULL, '2022-11-11 21:34:56', '2022-11-11 21:34:56');
 
 --
 -- Indexes for dumped tables
@@ -237,6 +324,24 @@ ALTER TABLE `announcements`
 -- Indexes for table `applications`
 --
 ALTER TABLE `applications`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `archive_announcements`
+--
+ALTER TABLE `archive_announcements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `archive_events`
+--
+ALTER TABLE `archive_events`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `archive_organizations`
+--
+ALTER TABLE `archive_organizations`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -279,6 +384,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `renewals`
+--
+ALTER TABLE `renewals`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -293,19 +404,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `archive_announcements`
+--
+ALTER TABLE `archive_announcements`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `archive_events`
+--
+ALTER TABLE `archive_events`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `archive_organizations`
+--
+ALTER TABLE `archive_organizations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -317,13 +446,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `organizations`
 --
 ALTER TABLE `organizations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -332,10 +461,16 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `renewals`
+--
+ALTER TABLE `renewals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
