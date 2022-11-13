@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\ArchiveAnnouncement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -79,8 +80,9 @@ class AnnouncementController extends Controller
 
     public function getAllAnnouncements()
     {
-        $all = Announcement::all()
-            ->where('user_id', 'id', Auth::id());
+        $all = DB::table('announcements')
+            ->where('user_id', Auth::id())
+            ->get();
         return response()->json($all);
     }
 
@@ -168,7 +170,23 @@ class AnnouncementController extends Controller
     public function destroy($id)
     {
         try {
-            $delete = DB::table('applications')
+
+            $announcement  = DB::table('announcements')
+                ->select('*')
+                ->where('id', '=', $id)
+                ->first();
+
+            $AnnouncementArchive = new ArchiveAnnouncement();
+            $AnnouncementArchive->announcement_id = $announcement->id;
+            $AnnouncementArchive->user_id = $announcement->user_id;
+            $AnnouncementArchive->title = $announcement->title;
+            $AnnouncementArchive->announcement = $announcement->announcement;
+            $AnnouncementArchive->status = $announcement->status;
+            $AnnouncementArchive->announcement_created_at = $announcement->created_at;
+            $AnnouncementArchive->announcement_updated_at = $announcement->updated_at;
+            $AnnouncementArchive->save();
+
+            $delete = DB::table('announcements')
                 ->where('id', '=', $id)
                 ->delete();
 

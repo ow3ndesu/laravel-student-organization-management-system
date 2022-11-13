@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'archive', [\App\Http\Controllers\HomeController::class, 'archiveView'])->name('archive');
 Route::get(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'profile', [\App\Http\Controllers\HomeController::class, 'profileView'])->name('profile');
 Route::post(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'update', [\App\Http\Controllers\HomeController::class, 'update'])->name('profile.update');
 
@@ -36,6 +37,14 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-administrators', [App\Http\Controllers\AdministratorController::class, 'getAllAdministrators'])->name('administrator.administrators');
     Route::post('get-applications', [App\Http\Controllers\ApplicationController::class, 'getAllApplications'])->name('administrator.applications');
     Route::post('get-renewals', [App\Http\Controllers\RenewalController::class, 'getAllRenewals'])->name('administrator.renewals');
+
+    Route::post('get-archivedorganizations', [App\Http\Controllers\ArchiveOrganizationController::class, 'loadArchivedOrganizations'])->name('administrator.archive_organizations');
+    Route::post('get-archivedevents', [App\Http\Controllers\ArchiveEventController::class, 'loadArchivedEvents'])->name('administrator.archive_events');
+    Route::post('get-archivedannouncements', [App\Http\Controllers\ArchiveAnnouncementController::class, 'loadArchivedAnnouncements'])->name('administrator.archive_announcements');
+
+    Route::resource('/archivedannouncement/destroy', App\Http\Controllers\ArchiveAnnouncementController::class)->names(['destroy' => 'administrator.restoreAnnouncement']);
+    Route::resource('/archivedevent/destroy', App\Http\Controllers\ArchiveEventController::class)->names(['destroy' => 'administrator.restoreEvent']);
+    Route::resource('/archivedorganization/destroy', App\Http\Controllers\ArchiveOrganizationController::class)->names(['destroy' => 'administrator.restoreOrganization']);
 
     Route::resource('/application/view', App\Http\Controllers\ApplicationController::class)->names(['edit' => 'administrator.viewApplication']);
     Route::resource('/application/update', App\Http\Controllers\ApplicationController::class)->names(['update' => 'administrator.updateApplication']);

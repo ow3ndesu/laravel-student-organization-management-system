@@ -31,6 +31,11 @@ class HomeController extends Controller
         return view('student.home');
     }
 
+    public function archiveView()
+    {
+        return view('archive');
+    }
+
     public function profileView()
     {
         return view('profile');
@@ -86,7 +91,11 @@ class HomeController extends Controller
             ->select('*')
             ->get();
 
-        return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => ($organization->status == 1 || $organization->status == 2 ? $organization->name : "Student Organization"), "organizationid" => $organization->id]);
+        if ($organization != null) {
+            return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => ($organization->status == 1 || $organization->status == 2 ? $organization->name : "Student Organization"), "organizationid" => $organization->id]);
+        } else {
+            return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => "Student Organization", "organizationid" => 0]);
+        }
     }
 
     protected function update(Request $data)

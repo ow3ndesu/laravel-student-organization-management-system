@@ -356,6 +356,130 @@ echo request()->getRequestUri();
                 </div>
 
                 <div class="card-body">
+                    <!-- View Organization Modal -->
+                    <div class="modal fade" id="viewOrganizationModal" tabindex="-1" aria-labelledby="viewOrganizationModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="viewOrganizationForm" action="javascript:void(0);" method="PUT">
+                                    @csrf
+                                    <input type="hidden" name="organizationid" id="organizationid">
+                                    <input type="hidden" name="_method" value="POST">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="viewOrganizationModalLabel">View Organization</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mb-2">
+                                            <label for="re_name" class="col-md-2 col-form-label ">{{ __('Name')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <input id="re_name" type="text"
+                                                    class="form-control @error('re_name') is-invalid @enderror"
+                                                    name="re_name" value="{{ old('re_name') }}" required
+                                                    autocomplete="re_name" autofocus readonly>
+
+                                                @error('re_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="re_handler" class="col-md-2 col-form-label ">{{ __('Handler')
+                                                }}</label>
+                                            <div class="col-md-10">
+                                                <input id="re_handler" type="text"
+                                                    class="form-control @error('re_handler') is-invalid @enderror"
+                                                    name="re_handler" value="{{ old('re_handler') }}" required
+                                                    autocomplete="re_handler" autofocus readonly>
+
+                                                @error('re_handler')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label for="re_status" class="col-md-2 col-form-label ">{{ __('Status')
+                                                }}</label>
+                                            <div class="col-md-10">
+
+                                                <select id="re_status"
+                                                    class="form-control @error('re_status') is-invalid @enderror"
+                                                    name="re_status" value="{{ old('re_status') }}" required
+                                                    autocomplete="re_status" autofocus>
+                                                    <option value="0">Pending</option>
+                                                    <option value="1">Approved</option>
+                                                    <option value="2">Renewal</option>
+                                                    <option value="3">Disapproved</option>
+                                                </select>
+
+                                                @error('re_status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-12 " style="border: 1px solid #ccc; border-radius: 10px;">
+                                                <div class="row">
+                                                    <small><b>Applications</b></small>
+                                                    <div class="col-md-6 text-center preview">
+                                                        <a id="appForm" target="_blank" rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Application Form</a>
+                                                    </div>
+                                                    <div class="col-md-6 text-center preview">
+                                                        <a id="commForm" target="_blank" rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Adviser's Commitment
+                                                            Form</a>
+                                                    </div>  
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <small><b>Renewals</b></small>
+                                                    <div class="col-md-6 text-center preview">
+                                                        <a id="renewalletter" target="_blank" rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Renewal Letter</a>
+                                                    </div>
+                                                    <div class="col-md-6 text-center preview">
+                                                        <a id="accomplishmentreport" target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Accomplishment
+                                                            Report</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-md-12 text-center preview">
+                                                        <a id="budgetaryreport" target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="form-control text-decoration-none">Budgetary
+                                                            Report</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1 mb-2">
+                                                    <div class="col-md-12 preview">
+                                                        <b>Officers & Members</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" value="Submit" class="btn btn-primary"
+                                            id="editOrganizationSubmitButton">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -365,7 +489,7 @@ echo request()->getRequestUri();
                                 <th scope="col" class="text-end">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="organizationTableBody">
+                        <tbody id="organizationsTableBody">
                         </tbody>
                     </table>
                 </div>
@@ -936,23 +1060,32 @@ echo request()->getRequestUri();
                 success: function (data) {
                     if (data.length != 0) {
 
-                        $('#organizationTableBody').empty();
+                        $('#organizationsTableBody').empty();
                         data.forEach(element => {
+
+                            var edit = "";
+                            if (element.status != 2) {
+                                edit = `<button type="button" value="` +
+                                    element.id +
+                                    `" name="viewOrganization" class="btn btn-primary" id="viewOrganization" data-bs-toggle="modal" data-bs-target="#viewOrganizationModal">
+                                                <i class="fas fa-eye"></i>
+                                            </button>`;
+                            }
                             var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : 'Removal';
 
-                            $('#organizationTableBody').append(`
+                            $('#organizationsTableBody').append(`
                             <tr>
                                 <td>`+ element.name + `</td>
                                 <td>`+ element.user_name + `</td>
                                 <td>`+ status + `</td>
                                 <td  class="text-end">
-                                    Under Development.
+                                    `+ edit +`
                                 </td>
                              </tr>
                             `)
                         });
                     } else {
-                        $('#organizationTableBody').empty();
+                        $('#organizationsTableBody').empty();
                     }
                 }
             });
@@ -1172,6 +1305,10 @@ echo request()->getRequestUri();
                 }
             })
         }
+
+        $(document).on('click', "button[name='viewOrganization']", function () {
+            
+        });
 
         $(document).on('click', "button[name='viewApplication']", function () {
             var id = $(this).val();

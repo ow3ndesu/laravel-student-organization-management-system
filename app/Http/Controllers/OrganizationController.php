@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArchiveOrganization;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,8 +110,31 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organization $organization)
+    public function destroy($id)
     {
-        //
+        try {
+            $organization  = DB::table('organization')
+                ->select('*')
+                ->where('id', '=', $id)
+                ->first();
+
+            $ArchiveOrganization = new ArchiveOrganization();
+            $ArchiveOrganization->organization_id = $organization->id;
+            $ArchiveOrganization->user_id = $organization->user_id;
+            $ArchiveOrganization->status = $organization->status;
+            $ArchiveOrganization->organization_created_at = $organization->created_at;
+            $ArchiveOrganization->organization_updated_at = $organization->updated_at;
+            $ArchiveOrganization->save();
+
+            $delete = DB::table('organizations')
+                ->where('id', '=', $id)
+                ->delete();
+
+            if ($delete != 0) {
+                return $delete;
+            }
+        } catch (\Throwable $e) {
+            return $e;
+        }
     }
 }

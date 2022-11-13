@@ -1382,6 +1382,7 @@ echo request()->getRequestUri();
 
                 success: function (data) {
                     // Announcements
+                    console.log(data)
                     $('#announcementTableBody').empty();
                     if (data.length != 0) {
                         for (let index = 0; index < data.length; index++) {
@@ -1781,7 +1782,7 @@ echo request()->getRequestUri();
             })
         });
 
-        $("button[name='editAnnouncement']").click(function () {
+        $(document).on('click', "button[name='editAnnouncement']", function () {
             var id = $(this).val();
             var route = "{{ route('announcement.edit', ':id')}}";
             route = route.replace(":id", id);
@@ -1844,7 +1845,7 @@ echo request()->getRequestUri();
                 });
         });
 
-        $("button[name='deleteAnnouncement']").click(function () {
+        $(document).on('click', "button[name='deleteAnnouncement']", function () {
             var id = $(this).val();
             var route = "{{ route('announcement.destroy', ':id')}}";
             route = route.replace(":id", id);

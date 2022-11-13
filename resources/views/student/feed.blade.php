@@ -138,7 +138,10 @@
                     var testend = Date.parse(element.out);
 
                     if ((element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) || (element.status == 1 && (parseInt(teststart) >= parseInt(testnow)))) {
+                        const imageurl = element.image;
+                        const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="100%" style="border-radius: 10px">`;
                         $('#events').append(`
+                                    `+ image +`
                                     <hr style="width: 10%; height: 5px;">
                                     <div class="row">
                                         <div class="row">

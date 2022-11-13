@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArchiveEvent;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -158,6 +159,25 @@ class EventController extends Controller
     public function destroy($id)
     {
         try {
+            $event  = DB::table('events')
+                ->select('*')
+                ->where('id', '=', $id)
+                ->first();
+
+            $ArchiveEvent = new ArchiveEvent();
+            $ArchiveEvent->event_id = $event->id;
+            $ArchiveEvent->user_id = $event->user_id;
+            $ArchiveEvent->image = $event->image;
+            $ArchiveEvent->name = $event->name;
+            $ArchiveEvent->place = $event->place;
+            $ArchiveEvent->date_time = $event->date_time;
+            $ArchiveEvent->out = $event->out;
+            $ArchiveEvent->description = $event->description;
+            $ArchiveEvent->status = $event->status;
+            $ArchiveEvent->event_created_at = $event->created_at;
+            $ArchiveEvent->event_updated_at = $event->updated_at;
+            $ArchiveEvent->save();
+
             $delete = DB::table('events')
                 ->where('id', '=', $id)
                 ->delete();
