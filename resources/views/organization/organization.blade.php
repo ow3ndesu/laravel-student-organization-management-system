@@ -874,7 +874,6 @@ echo request()->getRequestUri();
         }
 
         function showAll() {
-            // responsiveSlider();
             showApplication();
             showRenewal();
             showEvents();
@@ -891,6 +890,7 @@ echo request()->getRequestUri();
                 url: "{{route('organization.myapplication')}}",
 
                 success: function (data) {
+                    console.log(data)
                     if (data.length !== 0) {
                         $("#applicationMessage").empty().append(`
                             <div class="row mb-3">
@@ -900,7 +900,7 @@ echo request()->getRequestUri();
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Cancel</button>
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[1].id + `">Cancel</button>
                                 </div>
                             </div>
                         `);
@@ -912,7 +912,7 @@ echo request()->getRequestUri();
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[0].id + `">Remove</button>
+                                    <button type="button" class="btn btn-danger" name="deleteApplication" id="deleteApplication" value="` + data[1].id + `">Remove</button>
                                 </div>
                             </div>
                         `);

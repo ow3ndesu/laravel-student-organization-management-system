@@ -92,6 +92,7 @@ class HomeController extends Controller
             ->get();
 
         if ($organization != null) {
+            // echo '<script>console.log(' . var_dump($organization) .')</script>';
             return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => ($organization->status == 1 || $organization->status == 2 ? $organization->name : "Student Organization"), "organizationid" => $organization->id]);
         } else {
             return view('organization.organization', ["events" => $events, "status" => $organization == null || $organization->status == 0 ? 'pending' : ($organization->status == 1 ? 'approved' : ($organization->status == 2 ? 'renewal' : 'disapproved')), "name" => "Student Organization", "organizationid" => 0]);
