@@ -89,8 +89,9 @@ class AnnouncementController extends Controller
     public function getAllAnnouncementsNonAuthor()
     {
         $all = DB::table('announcements')
-            ->select('announcements.*', 'users.name as author', 'users.email')
+            ->select('announcements.*', 'organizations.name as author', 'users.email')
             ->join('users', 'users.id', '=', 'announcements.user_id')
+            ->join('organizations', 'organizations.user_id', '=', 'users.id')
             ->get();
         return response()->json($all);
     }

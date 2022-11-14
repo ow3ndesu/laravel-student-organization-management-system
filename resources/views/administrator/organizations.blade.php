@@ -173,7 +173,6 @@ echo request()->getRequestUri();
                                                     autocomplete="new_applicationstatus" autofocus>
                                                     <option value="0">Pending</option>
                                                     <option value="1">Approved</option>
-                                                    <option value="2">Renewal</option>
                                                     <option value="3">Disapproved</option>
                                                 </select>
 
@@ -307,9 +306,8 @@ echo request()->getRequestUri();
                                                     class="form-control @error('re_status') is-invalid @enderror"
                                                     name="re_status" value="{{ old('re_status') }}" required
                                                     autocomplete="re_status" autofocus>
-                                                    <option value="0">Pending</option>
-                                                    <option value="1">Approved</option>
                                                     <option value="2">Renewal</option>
+                                                    <option value="1">Approved</option>
                                                     <option value="3">Disapproved</option>
                                                 </select>
 

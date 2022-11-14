@@ -50,7 +50,7 @@
             <div class="container">
                 <img src="\img\neust-logo.png" alt="NEUST-MGT Logo" height="30" width="30" style="margin-right: 10px" />
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    NEUST - SOMS
+                    Student Organization Management System |
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -60,7 +60,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <!-- <ul class="navbar-nav me-auto">
                         @if(Auth::check()) @if(auth()->user()->type ==
                         'Student')
                         <li class="nav-item">
@@ -103,11 +103,54 @@
                                     }}">Administrators</a>
                         </li>
                         @endif @endif
-                    </ul>
+                    </ul> -->
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+                        @if(Auth::check()) @if(auth()->user()->type ==
+                        'Student')
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('student.dashboard')) active @endif"
+                                href="{{ route('student.dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('student.feed')) active @endif"
+                                href="{{ route('student.feed') }}">Feed</a>
+                        </li>
+                        @endif @if(auth()->user()->type == 'Organization')
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('organization.dashboard')) active @endif"
+                                href="{{ route('organization.dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('organization.organization')) active @endif" href="{{
+                                        route('organization.organization')
+                                    }}">Organization</a>
+                        </li>
+                        @endif @if(auth()->user()->type == 'Administrator')
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('administrator.dashboard')) active @endif" href="{{
+                                        route('administrator.dashboard')
+                                    }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('administrator.organizationsTab')) active @endif" href="{{
+                                        route('administrator.organizationsTab')
+                                    }}">Organizations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('administrator.studentsTab')) active @endif" href="{{
+                                        route('administrator.studentsTab')
+                                    }}">Students</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(Route::is('administrator.administratorsTab')) active @endif" href="{{
+                                        route('administrator.administratorsTab')
+                                    }}">Administrators</a>
+                        </li>
+                        @endif @endif
+
                         @guest @if (Route::is('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __("Login") }}</a>
@@ -125,9 +168,11 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                @if(auth()->user()->type == 'Administrator')
                                 <a class="dropdown-item" href="{{ route('archive') }}">
                                     {{ __("Archive") }}
                                 </a>
+                                @endif
                                 <a class="dropdown-item" href="{{ route('profile') }}">
                                     {{ __("Profile") }}
                                 </a>

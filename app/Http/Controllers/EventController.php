@@ -84,8 +84,9 @@ class EventController extends Controller
     public function getAllEventsNonAuthor()
     {
         $all = DB::table('events')
-            ->select('events.*', 'users.name as author', 'users.email')
+            ->select('events.*', 'organizations.name as author', 'users.email')
             ->join('users', 'users.id', '=', 'events.user_id')
+            ->join('organizations', 'organizations.user_id', '=', 'users.id')
             ->get();
         return response()->json($all);
     }
