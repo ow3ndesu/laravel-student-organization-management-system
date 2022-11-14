@@ -41,10 +41,12 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::post('get-archivedorganizations', [App\Http\Controllers\ArchiveOrganizationController::class, 'loadArchivedOrganizations'])->name('administrator.archive_organizations');
     Route::post('get-archivedevents', [App\Http\Controllers\ArchiveEventController::class, 'loadArchivedEvents'])->name('administrator.archive_events');
     Route::post('get-archivedannouncements', [App\Http\Controllers\ArchiveAnnouncementController::class, 'loadArchivedAnnouncements'])->name('administrator.archive_announcements');
+    Route::post('get-archivedstudents', [App\Http\Controllers\ArchiveStudentController::class, 'loadArchivedStudents'])->name('administrator.archive_students');
 
     Route::resource('/archivedannouncement/destroy', App\Http\Controllers\ArchiveAnnouncementController::class)->names(['destroy' => 'administrator.restoreAnnouncement']);
     Route::resource('/archivedevent/destroy', App\Http\Controllers\ArchiveEventController::class)->names(['destroy' => 'administrator.restoreEvent']);
     Route::resource('/archivedorganization/destroy', App\Http\Controllers\ArchiveOrganizationController::class)->names(['destroy' => 'administrator.restoreOrganization']);
+    Route::resource('/archivedstudent/destroy', App\Http\Controllers\ArchiveStudentController::class)->names(['destroy' => 'administrator.restoreStudent']);
 
     Route::resource('/application/view', App\Http\Controllers\ApplicationController::class)->names(['edit' => 'administrator.viewApplication']);
     Route::resource('/application/update', App\Http\Controllers\ApplicationController::class)->names(['update' => 'administrator.updateApplication']);

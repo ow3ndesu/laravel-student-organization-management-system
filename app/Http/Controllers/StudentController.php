@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArchiveEvent;
+use App\Models\ArchiveStudent;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,10 +132,27 @@ class StudentController extends Controller
     public function destroy($id)
     {
         try {
+            $student  = DB::table('users')
+                ->select('*')
+                ->where('id', '=', $id)
+                ->first();
+
+            $ArchiveStudent = new ArchiveStudent();
+            $ArchiveStudent->user_id = $student->id;
+            $ArchiveStudent->name = $student->name;
+            $ArchiveStudent->email = $student->email;
+            $ArchiveStudent->email_verified_at = $student->email_verified_at;
+            $ArchiveStudent->password = $student->password;
+            $ArchiveStudent->type = $student->type;
+            $ArchiveStudent->remember_token = $student->remember_token;
+            $ArchiveStudent->student_created_at = $student->created_at;
+            $ArchiveStudent->student_updated_at = $student->updated_at;
+            $ArchiveStudent->save();
+
             $delete = DB::table('users')
                 ->where('id', '=', $id)
                 ->delete();
-
+                
             if ($delete != 0) {
                 return $delete;
             }

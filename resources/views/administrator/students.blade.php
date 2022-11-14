@@ -386,7 +386,7 @@
                                     'Student Deleted!',
                                     'success'
                                 )
-                                $('#studentTableBody').empty();
+                                $('#studentsTableBody').empty();
                                 getStudents();
                             } else {
                                 Swal.fire(

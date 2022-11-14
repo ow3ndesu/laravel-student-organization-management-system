@@ -63,6 +63,25 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="card mt-2">
+                        <div class="card-header"><b>{{ __("Students") }}</b></div>
+
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fullname</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col"  class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -79,6 +98,7 @@
             showOrganizations();
             showEvents();
             showAnnouncements();
+            showStudents();
         }
         showAll();
 
@@ -226,6 +246,42 @@
                 }
             })
         }
+
+        function showStudents() {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: "{{route('administrator.archive_students')}}",
+
+                success: function (data) {
+                    // Students
+                    $('#studentsTableBody').empty();
+                    if (data.length != 0) {
+                        data.forEach(element => {
+                            $('#studentsTableBody').append(`
+                                <tr>
+                                    <td>`+ element.name + `</td>
+                                    <td>`+ element.email + `</td>
+                                    <td  class="text-end">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" value="` +
+                                element.id +
+                                `" name="redoArchivedStudent" class="btn btn-danger between" id="redoArchivedStudent">
+                                                 <i class="fa fa-undo"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        $('#studentsTableBody').empty();
+                    }
+                }
+            })
+        }
         
         $(document).on('click', "button[name='redoArchivedAnnouncement']", function () {
             var id = $(this).val();
@@ -363,6 +419,56 @@
                                     'success'
                                 )
                                 $('#eventTableBody').empty();
+                                showAll();
+                            } else {
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Something went wrong!',
+                                    'error'
+                                )
+                            }
+                        },
+                    });
+                }
+            })
+        });
+        
+        $(document).on('click', "button[name='redoArchivedStudent']", function () {
+            var id = $(this).val();
+            var route = "{{ route('administrator.restoreStudent', ':id')}}";
+            route = route.replace(":id", id);
+
+            var formData = new FormData();
+            formData.append(
+                "_token",
+                $('meta[name="csrf-token"]').attr("content")
+            );
+            formData.append("_method", "DELETE");
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will revert this changes!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, restore it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: route,
+                        contentType: false,
+                        processData: false,
+                        type: "POST",
+                        data: formData,
+                        success: function (data) {
+                            if (data >= 1) {
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Student Restored!',
+                                    'success'
+                                )
+                                $('#studentsTableBody').empty();
                                 showAll();
                             } else {
                                 Swal.fire(
