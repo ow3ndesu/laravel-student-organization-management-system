@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ArchiveOrganization;
 use App\Models\Organization;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -87,9 +88,19 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
+    public function edit($id)
     {
-        //
+        $organization = DB::table('organizations')
+            ->select('organizations.id as organization_id', 'users.name as handler', 'organizations.name', 'organizations.status', 'applications.application_form', 'applications.advisers_commitment_form', 'renewals.renewal_letter', 'renewals.accomplishment_report', 'renewals.budgetary_report')
+            ->leftJoin('users', 'users.id', '=', 'organizations.user_id')
+            ->leftJoin('applications', 'applications.organization_id', '=', 'organizations.id')
+            ->leftJoin('renewals', 'renewals.organization_id', '=', 'organizations.id')
+            ->where('organizations.id', '=', $id)
+            ->orderByDesc('organizations.created_at')
+            ->limit(1)
+            ->get();
+
+        return response()->json($organization);
     }
 
     /**
@@ -99,9 +110,22 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, $id)
     {
-        //
+        $modifiedat = date('m/d/Y');
+        try {
+            if ($request->from === "ADMIN") {
+                $update = DB::table('organizations')
+                    ->where('organizations.id', $id)
+                    ->update([
+                        "organizations.status" => $request->status,
+                        "organizations.updated_at" => Carbon::now()->toDateTimeString(),
+                    ]);
+                return $update;
+            }
+        } catch (\Throwable $e) {
+            return $e;
+        }
     }
 
     /**

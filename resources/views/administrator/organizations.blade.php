@@ -371,16 +371,16 @@ echo request()->getRequestUri();
                                     </div>
                                     <div class="modal-body">
                                         <div class="row mb-2">
-                                            <label for="re_name" class="col-md-2 col-form-label ">{{ __('Name')
+                                            <label for="are_name" class="col-md-2 col-form-label ">{{ __('Name')
                                                 }}</label>
                                             <div class="col-md-10">
 
-                                                <input id="re_name" type="text"
-                                                    class="form-control @error('re_name') is-invalid @enderror"
-                                                    name="re_name" value="{{ old('re_name') }}" required
-                                                    autocomplete="re_name" autofocus readonly>
+                                                <input id="are_name" type="text"
+                                                    class="form-control @error('are_name') is-invalid @enderror"
+                                                    name="are_name" value="{{ old('are_name') }}" required
+                                                    autocomplete="are_name" autofocus readonly>
 
-                                                @error('re_name')
+                                                @error('are_name')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -388,15 +388,15 @@ echo request()->getRequestUri();
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <label for="re_handler" class="col-md-2 col-form-label ">{{ __('Handler')
+                                            <label for="are_handler" class="col-md-2 col-form-label ">{{ __('Handler')
                                                 }}</label>
                                             <div class="col-md-10">
-                                                <input id="re_handler" type="text"
-                                                    class="form-control @error('re_handler') is-invalid @enderror"
-                                                    name="re_handler" value="{{ old('re_handler') }}" required
-                                                    autocomplete="re_handler" autofocus readonly>
+                                                <input id="are_handler" type="text"
+                                                    class="form-control @error('are_handler') is-invalid @enderror"
+                                                    name="are_handler" value="{{ old('are_handler') }}" required
+                                                    autocomplete="are_handler" autofocus readonly>
 
-                                                @error('re_handler')
+                                                @error('are_handler')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -404,21 +404,19 @@ echo request()->getRequestUri();
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <label for="re_status" class="col-md-2 col-form-label ">{{ __('Status')
+                                            <label for="are_status" class="col-md-2 col-form-label ">{{ __('Status')
                                                 }}</label>
                                             <div class="col-md-10">
 
-                                                <select id="re_status"
-                                                    class="form-control @error('re_status') is-invalid @enderror"
-                                                    name="re_status" value="{{ old('re_status') }}" required
-                                                    autocomplete="re_status" autofocus>
-                                                    <option value="0">Pending</option>
-                                                    <option value="1">Approved</option>
+                                                <select id="are_status"
+                                                    class="form-control @error('are_status') is-invalid @enderror"
+                                                    name="are_status" value="{{ old('are_status') }}" required
+                                                    autocomplete="are_status" autofocus>
+                                                    <option value="1">Operating</option>
                                                     <option value="2">Renewal</option>
-                                                    <option value="3">Disapproved</option>
                                                 </select>
 
-                                                @error('re_status')
+                                                @error('are_status')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -430,11 +428,11 @@ echo request()->getRequestUri();
                                                 <div class="row">
                                                     <small><b>Applications</b></small>
                                                     <div class="col-md-6 text-center preview">
-                                                        <a id="appForm" target="_blank" rel="noopener noreferrer"
+                                                        <a id="aappForm" target="_blank" rel="noopener noreferrer"
                                                             class="form-control text-decoration-none">Application Form</a>
                                                     </div>
                                                     <div class="col-md-6 text-center preview">
-                                                        <a id="commForm" target="_blank" rel="noopener noreferrer"
+                                                        <a id="acommForm" target="_blank" rel="noopener noreferrer"
                                                             class="form-control text-decoration-none">Adviser's Commitment
                                                             Form</a>
                                                     </div>  
@@ -442,11 +440,11 @@ echo request()->getRequestUri();
                                                 <div class="row mt-2">
                                                     <small><b>Renewals</b></small>
                                                     <div class="col-md-6 text-center preview">
-                                                        <a id="renewalletter" target="_blank" rel="noopener noreferrer"
+                                                        <a id="arenewalletter" target="_blank" rel="noopener noreferrer"
                                                             class="form-control text-decoration-none">Renewal Letter</a>
                                                     </div>
                                                     <div class="col-md-6 text-center preview">
-                                                        <a id="accomplishmentreport" target="_blank"
+                                                        <a id="aaccomplishmentreport" target="_blank"
                                                             rel="noopener noreferrer"
                                                             class="form-control text-decoration-none">Accomplishment
                                                             Report</a>
@@ -454,7 +452,7 @@ echo request()->getRequestUri();
                                                 </div>
                                                 <div class="row mt-1">
                                                     <div class="col-md-12 text-center preview">
-                                                        <a id="budgetaryreport" target="_blank"
+                                                        <a id="abudgetaryreport" target="_blank"
                                                             rel="noopener noreferrer"
                                                             class="form-control text-decoration-none">Budgetary
                                                             Report</a>
@@ -1069,7 +1067,7 @@ echo request()->getRequestUri();
                                                 <i class="fas fa-eye"></i>
                                             </button>`;
                             }
-                            var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : 'Removal';
+                            var status = (element.status == 0) ? 'Pending' : (element.status == 1) ? 'Approved' : (element.status == 2) ? 'Renewal' : 'Removal';
 
                             $('#organizationsTableBody').append(`
                             <tr>
@@ -1305,7 +1303,71 @@ echo request()->getRequestUri();
         }
 
         $(document).on('click', "button[name='viewOrganization']", function () {
-            
+            var id = $(this).val();
+            var route = "{{ route('administrator.viewOrganization', ':id')}}";
+            route = route.replace(":id", id);
+
+            $.ajax({
+                url: route,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (data) {
+                    $('#organizationid').val(data[0]['organization_id'])
+                    $('#are_name').val(data[0]['name']);
+                    $('#are_handler').val(data[0]['handler']);
+                    $('#are_status').val(data[0]['status']);
+                    $('#aappForm').attr('href', '../' + data[0].application_form)
+                    $('#acommForm').attr('href', '../' + data[0].advisers_commitment_form)
+                    $('#arenewalletter').attr('href', '../' + data[0].renewal_letter)
+                    $('#aaccomplishmentreport').attr('href', '../' + data[0].accomplishment_report)
+                    $('#abudgetaryreport').attr('href', '../' + data[0].budgetary_report)
+                }
+            }),
+                $(document).unbind('submit').on("submit", "#viewOrganizationForm", function () {
+                    let id = $('#organizationid').val();
+                    let status = $('#are_status').val();
+
+                    let route = "{{ route('administrator.updateOrganization', ':id')}}";
+                    route = route.replace(':id', id);
+
+                    let formData = new FormData();
+                    formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                    formData.append("_method", 'PUT');
+                    formData.append("from", "ADMIN");
+                    formData.append('status', status);
+
+                    $.ajax({
+                        url: route,
+                        method: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (data) {
+                            if (data >= 1) {
+                                $('#viewOrganizationModal').modal('hide');
+                                Swal.fire(
+                                    'Yeeeey!',
+                                    'Organization Updated!',
+                                    'success'
+                                )
+
+                                $('#viewOrganizationForm').trigger('reset');
+                                $('#organizationTableBody').empty();
+                                showOrganizations();
+                            } else {
+                                $('#viewOrganizationForm').modal('hide');
+                                Swal.fire(
+                                    'Eeek!',
+                                    'Nothing Changes!',
+                                    'error'
+                                )
+
+                                $('#viewOrganizationForm').trigger('reset');
+                            }
+                        }
+                    })
+                });
         });
 
         $(document).on('click', "button[name='viewApplication']", function () {

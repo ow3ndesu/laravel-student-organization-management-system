@@ -48,6 +48,8 @@ Route::group(["middleware" => "administrator", "prefix" => "administrator"], fun
     Route::resource('/archivedorganization/destroy', App\Http\Controllers\ArchiveOrganizationController::class)->names(['destroy' => 'administrator.restoreOrganization']);
     Route::resource('/archivedstudent/destroy', App\Http\Controllers\ArchiveStudentController::class)->names(['destroy' => 'administrator.restoreStudent']);
 
+    Route::resource('/organization/view', App\Http\Controllers\OrganizationController::class)->names(['edit' => 'administrator.viewOrganization']);
+    Route::resource('/organization/update', App\Http\Controllers\OrganizationController::class)->names(['update' => 'administrator.updateOrganization']);
     Route::resource('/application/view', App\Http\Controllers\ApplicationController::class)->names(['edit' => 'administrator.viewApplication']);
     Route::resource('/application/update', App\Http\Controllers\ApplicationController::class)->names(['update' => 'administrator.updateApplication']);
     Route::resource('/renewal/view', App\Http\Controllers\RenewalController::class)->names(['edit' => 'administrator.viewRenewal']);
