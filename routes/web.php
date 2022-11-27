@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::post('get-history', [App\Http\Controllers\EventController::class, 'getEventsHistory'])->name('events.history');
+Route::get(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'history', [\App\Http\Controllers\HomeController::class, 'historyView'])->name('history');
 Route::get(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'archive', [\App\Http\Controllers\HomeController::class, 'archiveView'])->name('archive');
 Route::get(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'profile', [\App\Http\Controllers\HomeController::class, 'profileView'])->name('profile');
 Route::post(substr(request()->getRequestUri(), 0, strrpos(request()->getRequestUri(), '/')) . '/' . 'update', [\App\Http\Controllers\HomeController::class, 'update'])->name('profile.update');

@@ -2,6 +2,25 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            <div class="card mb-4" id="Infographics">
+                <div class="card-header">
+                    {{ __("Infographics") }}
+                </div>
+
+                <div class="card-body" id="infographics-container">
+                    <div id="slider">
+                        <ul id="slideWrap">
+                            <li><img src="{{ asset('img/infographics.svg') }}" alt=""></li>
+                            @foreach($events as $row)
+                                <li><img class="bd-placeholder-img" src="{{asset("{$row->image}")}}" alt="">
+                                </li>
+                            @endforeach
+                        </ul>
+                        <a id="prev" href="#">&#8810;</a>
+                        <a id="next" href="#">&#8811;</a>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header">
                     {{ __("Feed") }}
@@ -56,6 +75,7 @@
 </div>
 </div>
 
+<script src="{{ asset('js/carousel.js') }}"></script>
 <script>
     $(document).ready(function () {
         function getTotalEvents() {

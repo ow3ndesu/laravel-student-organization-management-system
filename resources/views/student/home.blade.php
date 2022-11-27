@@ -62,6 +62,46 @@
                     </div>
                 </div>
             </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    {{ __("Notifications") }}
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12" id="notifications">
+                            <!-- <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            {{ __("There is a new event coming this Aug 1, 2022.") }}
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <i
+                                                class="far fas fa-bullhorn"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            {{ __("Go join us now at Astro World Convention | Gymnasium") }}
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <i
+                                                class="far fas fa-bullhorn"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -91,13 +131,41 @@
                 },
                 url: "{{route('student.events')}}",
                 success: function (data) {
+                    $("#notifications").empty();
                     data.forEach(element => {
                         var teststart = Date.parse(element.date_time);
                         const testnow = Date.now();
                         var testend = Date.parse(element.out);
+
+                        var months = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                            ];
+
+                        var start = new Date(element.date_time);
+                        var dmonth = months[start.getMonth()];
+                        var dday = (start.getDate() + 1 >= 10) ? start.getDate() : ('0' + (start.getDate() + 1));
+                        var dhour = (start.getHours() >= 10) ? start.getHours() : ('0' + start.getHours());
+                        var dmin = (start.getMinutes() >= 10) ? start.getMinutes() : ('0' + (start.getMinutes()));
+                        var ddate_time = dmonth + ' ' + dday + ', ' + start.getFullYear() + '. ' + ((dhour > 12) ? dhour - 12 : dhour) + ':' + dmin + ' ' + ((dhour < 12) ? 'AM' : 'PM');
                         
-                        if ((element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) || (element.status == 1 && (parseInt(teststart) >= parseInt(testnow)))) {
+                        if ((element.status == 1 && (parseInt(teststart) >= parseInt(testnow)))) {
                             incomingEvents++;
+                            $("#notifications").append(`
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            {{ __("There is a new event coming this `+ ddate_time +`, see more at feed.") }}
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <i
+                                                class="far fas fa-bullhorn"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `);
                         }
                     });
                     
@@ -108,6 +176,22 @@
                         
                         if (element.status == 1 && (parseInt(teststart) <= parseInt(testnow)) && (parseInt(testend) >= parseInt(testnow))) {
                             activeEvents++; 
+                            $("#notifications").append(`
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            {{ __("Come join us now at `+ element.name +` | `+ element.place +`, see more at feed.") }}
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <i
+                                                class="far fas fa-bullhorn"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `);
                         }
                     });
 

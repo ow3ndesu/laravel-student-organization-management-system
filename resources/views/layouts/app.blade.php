@@ -46,7 +46,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-transfarent shadow-sm">
             <div class="container">
                 <img src="\img\neust-logo.png" alt="NEUST-MGT Logo" height="30" width="30" style="margin-right: 10px" />
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -175,6 +175,9 @@
                                 @endif
                                 <a class="dropdown-item" href="{{ route('profile') }}">
                                     {{ __("Profile") }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('history') }}">
+                                    {{ __("Events History") }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
+use App\Models\Event;
 use App\Models\Organization;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +38,11 @@ class HomeController extends Controller
     public function archiveView()
     {
         return view('archive');
+    }
+
+    public function historyView()
+    {
+        return view('history');
     }
 
     public function profileView()
@@ -67,12 +76,45 @@ class HomeController extends Controller
 
     public function studentView()
     {
-        return view('student.home');
+        $events = DB::table('events')
+            ->select('*')
+            ->where('status', '=', '1')
+            ->whereBetween('date_time', [Carbon::now(), 'out'])
+            ->whereDate('out', '<', [Carbon::now(),'date_time' ])
+            ->get();
+
+        $announcements = DB::table('announcements')
+            ->select('*')
+            ->where('status', '=', '1')
+            ->get();
+
+        return view('student.home', ["events" => $events, "announcements" => $announcements]);
     }
 
     public function feedTab()
     {
-        return view('student.feed');
+        $events  = DB::table('events')
+            ->select('*')
+            ->where('status', '=', '1')
+            ->get();
+
+        $modifiedevents = [];
+
+        foreach ($events as $row) {
+            $ts_in = new DateTime($row->date_time);
+            $in = (int) $ts_in->getTimestamp();
+            $ts_out = new DateTime($row->out);
+            $out = (int) $ts_out->getTimestamp();
+            $ts_now = new DateTime();
+            $now = (int) $ts_now->getTimestamp();
+
+            if($in <= $now && $out >= $now) {
+                array_push($modifiedevents, $row);
+                // $modifiedevents[] = $row;
+            }
+        }
+
+        return view('student.feed', ["events" => $modifiedevents]);
     }
 
     public function organizationView()
@@ -89,6 +131,7 @@ class HomeController extends Controller
 
         $events  = DB::table('events')
             ->select('*')
+            ->where('status', '=', '1')
             ->get();
 
         if ($organization != null) {

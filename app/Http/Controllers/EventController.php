@@ -81,6 +81,15 @@ class EventController extends Controller
         return response()->json($all);
     }
 
+    public function getEventsHistory()
+    {
+        $all = DB::table('events')
+            ->select('*')
+            ->where('status', '=', '1')
+            ->get();
+        return response()->json($all);
+    }
+
     public function getAllEventsNonAuthor()
     {
         $all = DB::table('events')
