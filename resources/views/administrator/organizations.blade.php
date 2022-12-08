@@ -1347,7 +1347,7 @@ echo request()->getRequestUri();
                             if (data >= 1) {
                                 $('#viewOrganizationModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Organization Updated!',
                                     'success'
                                 )
@@ -1358,7 +1358,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#viewOrganizationForm').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1412,7 +1412,7 @@ echo request()->getRequestUri();
                             if (data >= 1) {
                                 $('#viewApplicationModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Updated!',
                                     'success'
                                 )
@@ -1423,7 +1423,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#viewApplicationForm').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1478,8 +1478,8 @@ echo request()->getRequestUri();
                             if (data >= 1) {
                                 $('#viewRenewalModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
-                                    'Event Updated!',
+                                    'Successed!',
+                                    'Renewal Updated!',
                                     'success'
                                 )
 
@@ -1489,7 +1489,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#viewRenewalForm').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1549,7 +1549,7 @@ echo request()->getRequestUri();
                             if (data == 1) {
                                 $('#editEventModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Updated!',
                                     'success'
                                 )
@@ -1560,7 +1560,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#editEventModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1603,7 +1603,7 @@ echo request()->getRequestUri();
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Deleted!',
                                     'success'
                                 )
@@ -1611,7 +1611,7 @@ echo request()->getRequestUri();
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -1645,7 +1645,7 @@ echo request()->getRequestUri();
 
                         $('#addAnnouncementModal').modal('hide');
                         Swal.fire(
-                            'Yeeeey!',
+                            'Successed!',
                             'Announcement is posted!',
                             'success'
                         )
@@ -1657,7 +1657,7 @@ echo request()->getRequestUri();
 
                         $('#addAnnouncementModal').modal('hide');
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             'Something went wrong!',
                             'error'
                         )
@@ -1708,7 +1708,7 @@ echo request()->getRequestUri();
                             if (data == 1) {
                                 $('#editAnnouncementModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Announcement Updated!',
                                     'success'
                                 )
@@ -1719,7 +1719,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#editAnnouncementModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1762,7 +1762,7 @@ echo request()->getRequestUri();
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Announcement Deleted!',
                                     'success'
                                 )
@@ -1770,7 +1770,7 @@ echo request()->getRequestUri();
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )

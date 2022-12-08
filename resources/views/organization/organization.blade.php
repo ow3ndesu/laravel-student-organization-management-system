@@ -948,13 +948,13 @@ echo request()->getRequestUri();
                                             showApplication();
                                             if (data >= 1) {
                                                 Swal.fire(
-                                                    'Yeeeey!',
+                                                    'Successed!Failed!',
                                                     'Application Deleted!',
                                                     'success'
                                                 )
                                             } else {
                                                 Swal.fire(
-                                                    'Eeek!',
+                                                    'Failed!',
                                                     'Something went wrong!',
                                                     'error'
                                                 )
@@ -1038,14 +1038,14 @@ echo request()->getRequestUri();
                                     showApplication();
                                     if (data == 1) {
                                         Swal.fire(
-                                            'Yeeeey!',
+                                            'Successed!',
                                             'Your application is submitted!',
                                             'success'
                                         );
 
                                     } else {
                                         Swal.fire(
-                                            'Eeek!',
+                                            'Failed!',
                                             data[0] || data,
                                             'error'
                                         );
@@ -1123,13 +1123,13 @@ echo request()->getRequestUri();
                                             showRenewal();
                                             if (data >= 1) {
                                                 Swal.fire(
-                                                    'Yeeeey!',
+                                                    'Successed!',
                                                     'Application Deleted!',
                                                     'success'
                                                 )
                                             } else {
                                                 Swal.fire(
-                                                    'Eeek!',
+                                                    'Failed!',
                                                     'Something went wrong!',
                                                     'error'
                                                 )
@@ -1237,14 +1237,14 @@ echo request()->getRequestUri();
                                     showRenewal();
                                     if (data == 1) {
                                         Swal.fire(
-                                            'Yeeeey!',
+                                            'Successed!',
                                             'Your renewal is submitted!',
                                             'success'
                                         );
 
                                     } else {
                                         Swal.fire(
-                                            'Eeek!',
+                                            'Failed!',
                                             data[0] || data,
                                             'error'
                                         );
@@ -1301,7 +1301,7 @@ echo request()->getRequestUri();
 
                             var status = (data[index]['status'] == 0) ? 'Pending' : (data[index]['status'] == 1) ? 'Approved' : 'Removal';
                             const imageurl = data[index]['image'];
-                            const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="50" height="50" style="border-radius: 50%">`;
+                            const image = `<img class="avatar" src="{{ asset('` + imageurl + `') }}" alt="" width="50" height="50">`;
 
                             $('#eventTableBody').append(
                                 `<tr>
@@ -1452,14 +1452,14 @@ echo request()->getRequestUri();
                     showApplication();
                     if (data == 1) {
                         Swal.fire(
-                            'Yeeeey!',
+                            'Successed!',
                             'Your application is submitted!',
                             'success'
                         );
 
                     } else {
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             data[0] || data,
                             'error'
                         );
@@ -1494,14 +1494,14 @@ echo request()->getRequestUri();
                     showRenewal();
                     if (data == 1) {
                         Swal.fire(
-                            'Yeeeey!',
+                            'Successed!',
                             'Your renewal is submitted!',
                             'success'
                         );
 
                     } else {
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             data[0] || data,
                             'error'
                         );
@@ -1541,14 +1541,14 @@ echo request()->getRequestUri();
                             showApplication();
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Application Deleted!',
                                     'success'
                                 )
                                 showApplication();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -1588,7 +1588,7 @@ echo request()->getRequestUri();
 
                         $('#addEventModal').modal('hide');
                         Swal.fire(
-                            'Yeeeey!',
+                            'Successed!',
                             'Event is listed for approval!',
                             'success'
                         )
@@ -1600,7 +1600,7 @@ echo request()->getRequestUri();
 
                         $('#addEventModal').modal('hide');
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             'Something went wrong!',
                             'error'
                         )
@@ -1665,7 +1665,7 @@ echo request()->getRequestUri();
                             if (data == 1) {
                                 $('#editEventModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Updated!',
                                     'success'
                                 )
@@ -1676,7 +1676,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#editEventModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1719,7 +1719,7 @@ echo request()->getRequestUri();
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Deleted!',
                                     'success'
                                 )
@@ -1727,7 +1727,7 @@ echo request()->getRequestUri();
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -1759,7 +1759,7 @@ echo request()->getRequestUri();
 
                         $('#addAnnouncementModal').modal('hide');
                         Swal.fire(
-                            'Yeeeey!',
+                            'Successed!',
                             'Announcement is listed for approval!',
                             'success'
                         )
@@ -1771,7 +1771,7 @@ echo request()->getRequestUri();
 
                         $('#addAnnouncementModal').modal('hide');
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             'Something went wrong!',
                             'error'
                         )
@@ -1822,7 +1822,7 @@ echo request()->getRequestUri();
                             if (data == 1) {
                                 $('#editAnnouncementModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Announcement Updated!',
                                     'success'
                                 )
@@ -1833,7 +1833,7 @@ echo request()->getRequestUri();
                             } else {
                                 $('#editAnnouncementModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -1876,7 +1876,7 @@ echo request()->getRequestUri();
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Announcement Deleted!',
                                     'success'
                                 )
@@ -1884,7 +1884,7 @@ echo request()->getRequestUri();
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )

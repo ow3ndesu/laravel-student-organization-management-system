@@ -271,7 +271,7 @@
                         if (data == 1) {
                             $('#addAdministratorModal').modal('hide');
                             Swal.fire(
-                                'Yeeeey!',
+                                'Successed!',
                                 'Administrator Account Added!',
                                 'success'
                             )
@@ -286,7 +286,7 @@
             } else {
                 $('#addAdministratorModal').modal('hide');
                 Swal.fire(
-                    'Eeek!',
+                    'Failed!',
                     'Password does not match!',
                     'error'
                 )
@@ -336,7 +336,7 @@
                             if (data == 1) {
                                 $('#editAdministratorModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Administrator Updated!',
                                     'success'
                                 )
@@ -347,7 +347,7 @@
                             } else {
                                 $('#editAdministratorModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -390,7 +390,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Administrator Deleted!',
                                     'success'
                                 )
@@ -398,7 +398,7 @@
                                 getAdministrators();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )

@@ -37,16 +37,16 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/app-auth.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 </head>
 
-<body>
+<body class="auth">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-primary-auth shadow-sm">
             <div class="container">
                 <img src="\img\neust-logo.png" alt="NEUST-MGT Logo" height="30" width="30" style="margin-right: 10px" />
                 <a class="navbar-brand" href="{{ url('/') }}">

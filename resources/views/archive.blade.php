@@ -314,7 +314,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Announcement Restored!',
                                     'success'
                                 )
@@ -322,7 +322,7 @@
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -364,7 +364,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Event Restored!',
                                     'success'
                                 )
@@ -372,7 +372,7 @@
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -414,7 +414,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Organization Restored!',
                                     'success'
                                 )
@@ -422,7 +422,7 @@
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )
@@ -464,7 +464,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Student Restored!',
                                     'success'
                                 )
@@ -472,7 +472,7 @@
                                 showAll();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )

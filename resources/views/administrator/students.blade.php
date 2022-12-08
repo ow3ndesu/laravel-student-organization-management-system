@@ -263,7 +263,7 @@
                         if (data == 1) {
                             $('#addStudentModal').modal('hide');
                             Swal.fire(
-                                'Yeeeey!',
+                                'Successed!',
                                 'Student Account Added!',
                                 'success'
                             )
@@ -278,7 +278,7 @@
             } else {
                 $('#addStudentModal').modal('hide');
                 Swal.fire(
-                    'Eeek!',
+                    'Failed!',
                     'Password does not match!',
                     'error'
                 )
@@ -328,7 +328,7 @@
                             if (data == 1) {
                                 $('#editStudentModal').modal('hide');
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Student Updated!',
                                     'success'
                                 )
@@ -339,7 +339,7 @@
                             } else {
                                 $('#editStudentModal').modal('hide');
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Nothing Changes!',
                                     'error'
                                 )
@@ -382,7 +382,7 @@
                         success: function (data) {
                             if (data >= 1) {
                                 Swal.fire(
-                                    'Yeeeey!',
+                                    'Successed!',
                                     'Student Deleted!',
                                     'success'
                                 )
@@ -390,7 +390,7 @@
                                 getStudents();
                             } else {
                                 Swal.fire(
-                                    'Eeek!',
+                                    'Failed!',
                                     'Something went wrong!',
                                     'error'
                                 )

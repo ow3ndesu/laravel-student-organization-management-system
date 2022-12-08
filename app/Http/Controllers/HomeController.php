@@ -119,7 +119,13 @@ class HomeController extends Controller
 
     public function organizationView()
     {
-        return view('organization.home');
+        $status = DB::table('organizations')
+            ->select('status')
+            ->where('user_id', '=', Auth::id())
+            ->first();
+        // $status->status = ($status != null) ? $status->status : 0;
+        $stats = ($status != null) ? $status->status : 0;
+        return view('organization.home', ["status" => $stats]);
     }
 
     public function organizationTab()

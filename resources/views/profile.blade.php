@@ -106,26 +106,26 @@
                         if (data == 1) {
 
                             Swal.fire(
-                                'Yeeeey!',
+                                'Successed!',
                                 'Profile Updated!',
                                 'success'
                             )
                         } else if (data == 0) {
                             Swal.fire(
-                                'Eeek!',
+                                'Failed!',
                                 'Nothing changes!',
                                 'error'
                             )
                         } else {
                             Swal.fire(
-                                'Eeek!',
+                                'Failed!',
                                 'Something went wrong!',
                                 'error'
                             )
                         }
                     } else {
                         Swal.fire(
-                            'Eeek!',
+                            'Failed!',
                             data,
                             'error'
                         )

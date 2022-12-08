@@ -75,6 +75,66 @@
                     </div>
                 </div>
             </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    {{ __("Notifications") }}
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12" id="notifications">
+                            @if($status == 0)
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                {{ __("Organization under approval! Please refer at Organization Tab above for more info about your application.") }}
+                                            </div>
+                                            <div class="col-md-2 text-end">
+                                                <i
+                                                    class="far fas fa-bullhorn"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if($status == 1)
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                {{ __("Organization is now approved! See more at Organization Tab above.") }}
+                                            </div>
+                                            <div class="col-md-2 text-end">
+                                                <i
+                                                    class="far fas fa-bullhorn"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if($status == 2)
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                {{ __("Organization under renewal! Please refer at Organization Tab anove for more info about your renewal.") }}
+                                            </div>
+                                            <div class="col-md-2 text-end">
+                                                <i
+                                                    class="far fas fa-bullhorn"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
